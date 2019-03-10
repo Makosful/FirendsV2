@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FirendsV2</string>
+    <string name="friend_detail">Details</string>
+    <string name="friend_text">SMS</string>
+    <string name="friend_call">call</string>
+    <string name="friend_mail">Email</string>
+    <string name="title_activity_friend_detail">FriendDetail</string>
+</resources>
