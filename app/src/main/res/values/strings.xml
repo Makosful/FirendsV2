@@ -5,4 +5,6 @@
     <string name="friend_call">call</string>
     <string name="friend_mail">Email</string>
     <string name="title_activity_friend_detail">FriendDetail</string>
+    <string name="friend_picture">Take Picture</string>
+    <string name="friend_image">profile image</string>
 </resources>
