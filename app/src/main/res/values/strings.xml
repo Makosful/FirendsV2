@@ -1,10 +1,20 @@
 <resources>
     <string name="app_name">FirendsV2</string>
+    <string name="title_activity_friend_detail">FriendDetail</string>
+
     <string name="friend_detail">Details</string>
     <string name="friend_text">SMS</string>
     <string name="friend_call">call</string>
     <string name="friend_mail">Email</string>
-    <string name="title_activity_friend_detail">FriendDetail</string>
+
+    <string name="friend_detail_image">profile image</string>
+
+    <string name="friend_edit_full_name">Full Name</string>
+    <string name="friend_edit_phone">Phone Number</string>
+    <string name="friend_edit_email">Email</string>
+
     <string name="friend_picture">Take Picture</string>
-    <string name="friend_image">profile image</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
