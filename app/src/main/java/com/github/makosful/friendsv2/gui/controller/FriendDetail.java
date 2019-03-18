@@ -13,6 +13,7 @@ import com.github.makosful.friendsv2.be.Friend;
 public class FriendDetail extends AppCompatActivity
 {
     private static final String TAG = "FriendDetail";
+    private Friend friend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -20,6 +21,7 @@ public class FriendDetail extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
 
+        friend = (Friend) getIntent().getSerializableExtra(Common.intentFriendDetail);
         final TextView name = findViewById(R.id.tv_name);
         name.setText(friend.getName());
         final TextView number = findViewById(R.id.txt_number);
@@ -31,5 +33,8 @@ public class FriendDetail extends AppCompatActivity
 
     public void editFriend(View view)
     {
+        Intent i = new Intent(this, FriendEdit.class);
+        i.putExtra(Common.intentFriendEdit, friend);
+        startActivityForResult(i, Common.FRIEND_EDIT_REQUEST_CODE);
     }
 }
