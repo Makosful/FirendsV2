@@ -27,33 +27,51 @@ public class FriendDetail extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        log("Creating Friend Detail");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
 
-        friend = (Friend) getIntent().getSerializableExtra(Common.INTENT_FRIEND_DETAIL);
-        name = findViewById(R.id.tv_name);
+        log("Retrieving Friend from extras");
+        friend = (Friend) getIntent().getExtras().get(Common.INTENT_FRIEND_DETAIL);
+
+        log("Setting default values from Friend");
+        name = findViewById(R.id.tv_friend_detail_full_name);
         name.setText(friend.getName());
-        phone = findViewById(R.id.txt_number);
-        final String numberText = friend.getNumber() + "";
-        phone.setText(numberText);
-        email = findViewById(R.id.txt_number);
+        phone = findViewById(R.id.tv_friend_detail_phone);
+        phone.setText(friend.getNumber());
+        email = findViewById(R.id.tv_friend_detail_email);
         email.setText(friend.getEmail());
+
+        log("Finished creating Friend Detail");
     }
 
     public void editFriend(View view)
     {
+        log("Preparing to edit Friend");
+
         Intent i = new Intent(this, FriendEdit.class);
         i.putExtra(Common.INTENT_FRIEND_EDIT, friend);
+
+        log("Starting Friend Edit activity");
+
         startActivityForResult(i, Common.FRIEND_EDIT_REQUEST_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
+        log("Returning from Friend Edit");
+
         Friend friend = (Friend)data.getExtras().get(Common.INTENT_FRIEND_EDIT_RESULT);
+
+        log("Parsing result code");
         switch (resultCode)
         {
-            case Activity.RESULT_OK: saveResult(friend); break;
+            case Activity.RESULT_OK:
+                log("Results came back as OK");
+                saveResult(friend);
+                break;
             default: Toast.makeText(this, "", Toast.LENGTH_SHORT).show(); break;
         }
     }
