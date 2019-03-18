@@ -20,7 +20,7 @@ public class FriendEdit extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_friend);
 
-        friend = (Friend) getIntent().getExtras().get(Common.intentFriendEdit);
+        friend = (Friend) getIntent().getExtras().get(Common.INTENT_FRIEND_EDIT);
     }
 
     public void saveEdits(View view)

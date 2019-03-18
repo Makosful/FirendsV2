@@ -104,7 +104,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Intent intent = new Intent(context, FriendDetail.class);
 
         Log.d(TAG, "Adding friend to intent extra");
-        intent.putExtra(Common.intentFriendDetail, friend);
+        intent.putExtra(Common.INTENT_FRIEND_DETAIL, friend);
 
         Log.d(TAG, "Starting new intent");
         context.startActivity(intent);

@@ -21,8 +21,8 @@ public class FriendDetail extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
 
-        friend = (Friend) getIntent().getSerializableExtra(Common.intentFriendDetail);
         final TextView name = findViewById(R.id.tv_name);
+        friend = (Friend) getIntent().getSerializableExtra(Common.INTENT_FRIEND_DETAIL);
         name.setText(friend.getName());
         final TextView number = findViewById(R.id.txt_number);
         final String numberText = friend.getNumber() + "";
