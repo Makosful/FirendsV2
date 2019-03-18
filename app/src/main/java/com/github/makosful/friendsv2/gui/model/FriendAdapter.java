@@ -155,7 +155,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         {
             super(itemView);
 
-            name = itemView.findViewById(R.id.tv_name);
+            name = itemView.findViewById(R.id.tv_friend_detail_full_name);
             details = itemView.findViewById(R.id.btn_detail);
             text = itemView.findViewById(R.id.btn_text);
             call = itemView.findViewById(R.id.btn_call);

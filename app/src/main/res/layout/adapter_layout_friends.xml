@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_friend_detail_full_name"
         android:layout_width="230dp"
         android:layout_height="43dp"
         android:gravity="center|start"
