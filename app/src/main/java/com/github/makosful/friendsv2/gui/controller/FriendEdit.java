@@ -19,8 +19,6 @@ import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 
-import java.util.ArrayList;
-
 public class FriendEdit extends AppCompatActivity
 {
 
