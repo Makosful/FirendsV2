@@ -155,4 +155,9 @@ public class FriendEdit extends AppCompatActivity
     {
         Log.d(TAG, message);
     }
+
+    public void setHome(View view)
+    {
+        Toast.makeText(this, "Home updated", Toast.LENGTH_SHORT).show();
+    }
 }
