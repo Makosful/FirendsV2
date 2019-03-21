@@ -6,7 +6,8 @@ public class Common
     public static final String INTENT_FRIEND_EDIT = "friendEdit";
     public static final String INTENT_FRIEND_EDIT_RESULT = "friendEditResult";
 
-    public static final int CAMERA_REQUEST_CODE = 10;
-    public static final int FRIEND_EDIT_REQUEST_CODE = 20;
-    public static final int PERMISSION_REQUEST_CODE = 1000;
+    public static final int FEATURE_REQUEST_CODE_CAMERA         = 101;
+    public static final int ACTIVITY_REQUEST_CODE_FRIEND_EDIT   = 201;
+    public static final int PERMISSION_REQUEST_CODE_CAMERA      = 301;
+    public static final int PERMISSION_REQUEST_CODE_LOCATION    = 302;
 }
