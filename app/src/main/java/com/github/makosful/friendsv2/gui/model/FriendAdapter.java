@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.makosful.friendsv2.Common;
@@ -52,7 +53,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Log.d(TAG, "Binding ViewHolder");
 
         final Friend friend = friendList.get(position);
-        Log.d("friend", "Retrieved friend: " + friend.getName());
+        Log.d(TAG, "Retrieved friend: " + friend.getName());
+
+        Log.d(TAG, "Setting friend image");
+        viewHolder.image.setImageBitmap(friend.getImage());
 
         Log.d(TAG, "Setting friend name");
         viewHolder.name.setText(friend.getName());
@@ -145,6 +149,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     class FriendViewHolder extends RecyclerView.ViewHolder
     {
+        private ImageView image;
         private TextView name;
         private ImageButton details;
         private ImageButton text;
@@ -155,11 +160,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         {
             super(itemView);
 
-            name = itemView.findViewById(R.id.tv_friend_detail_full_name);
-            details = itemView.findViewById(R.id.btn_detail);
-            text = itemView.findViewById(R.id.btn_text);
-            call = itemView.findViewById(R.id.btn_call);
-            mail = itemView.findViewById(R.id.btn_mail);
+            image = itemView.findViewById(R.id.iv_friend_list_image);
+            name = itemView.findViewById(R.id.tv_friend_list_name);
+            details = itemView.findViewById(R.id.btn_friend_list_details);
+            text = itemView.findViewById(R.id.btn_friend_list_sms);
+            call = itemView.findViewById(R.id.btn_friend_list_call);
+            mail = itemView.findViewById(R.id.btn_friend_list_mail);
         }
     }
 }

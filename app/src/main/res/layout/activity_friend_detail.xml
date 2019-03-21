@@ -19,7 +19,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tv_friend_detail_full_name"
+        android:id="@+id/tv_friend_list_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_friend_detail_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
-        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_full_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_list_name"
         tools:text="+45 12 98 34 76" />
 
     <TextView

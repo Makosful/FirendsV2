@@ -36,7 +36,7 @@ public class FriendDetail extends AppCompatActivity
         friend = (Friend) getIntent().getExtras().get(Common.INTENT_FRIEND_DETAIL);
 
         log("Setting default values from Friend");
-        name = findViewById(R.id.tv_friend_detail_full_name);
+        name = findViewById(R.id.tv_friend_list_name);
         name.setText(friend.getName());
         phone = findViewById(R.id.tv_friend_detail_phone);
         phone.setText(friend.getNumber());
@@ -55,7 +55,7 @@ public class FriendDetail extends AppCompatActivity
 
         log("Starting Friend Edit activity");
 
-        startActivityForResult(i, Common.FRIEND_EDIT_REQUEST_CODE);
+        startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_EDIT);
     }
 
     @Override

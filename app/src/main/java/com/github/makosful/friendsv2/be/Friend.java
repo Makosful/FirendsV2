@@ -1,9 +1,12 @@
 package com.github.makosful.friendsv2.be;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class Friend implements Serializable
 {
+    private Bitmap image;
     private String name;
     private String email;
     private String number;
@@ -41,5 +44,15 @@ public class Friend implements Serializable
     public void setNumber(String number)
     {
         this.number = number;
+    }
+
+    public Bitmap getImage()
+    {
+        return image;
+    }
+
+    public void setImage(Bitmap image)
+    {
+        this.image = image;
     }
 }
