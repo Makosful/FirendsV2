@@ -8,14 +8,26 @@ import java.util.Date;
 
 public class Friend implements Serializable
 {
+    private int id;
     private String name;
     private String adress;
-    private Location location;
+    private long latitude;
+    private long longitude;
     private String phone;
     private String email;
     private String website;
     private Date birthDate;
     private Bitmap picture;
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
     public String getName()
     {
@@ -37,14 +49,24 @@ public class Friend implements Serializable
         this.adress = adress;
     }
 
-    public Location getLocation()
+    public long getLatitude()
     {
-        return location;
+        return latitude;
     }
 
-    public void setLocation(Location location)
+    public void setLatitude(long latitude)
     {
-        this.location = location;
+        this.latitude = latitude;
+    }
+
+    public long getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude(long longitude)
+    {
+        this.longitude= longitude;
     }
 
     public String getPhone()
