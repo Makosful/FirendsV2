@@ -4,19 +4,18 @@ import android.graphics.Bitmap;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Friend implements Serializable
 {
-    private Bitmap image;
     private String name;
+    private String adress;
+    private Location location;
+    private String phone;
     private String email;
-    private String number;
-    private Location home;
-
-    public Friend(String name)
-    {
-        this.name = name;
-    }
+    private String website;
+    private Date birthDate;
+    private Bitmap picture;
 
     public String getName()
     {
@@ -26,6 +25,36 @@ public class Friend implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getAdress()
+    {
+        return adress;
+    }
+
+    public void setAdress(String adress)
+    {
+        this.adress = adress;
+    }
+
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    public void setLocation(Location location)
+    {
+        this.location = location;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
     }
 
     public String getEmail()
@@ -38,33 +67,33 @@ public class Friend implements Serializable
         this.email = email;
     }
 
-    public String getNumber()
+    public String getWebsite()
     {
-        return number;
+        return website;
     }
 
-    public void setNumber(String number)
+    public void setWebsite(String website)
     {
-        this.number = number;
+        this.website = website;
     }
 
-    public Bitmap getImage()
+    public Date getBirthDate()
     {
-        return image;
+        return birthDate;
     }
 
-    public void setImage(Bitmap image)
+    public void setBirthDate(Date birthDate)
     {
-        this.image = image;
+        this.birthDate = birthDate;
     }
 
-    public Location getHome()
+    public Bitmap getPicture()
     {
-        return home;
+        return picture;
     }
 
-    public void setHome(Location home)
+    public void setPicture(Bitmap picture)
     {
-        this.home = home;
+        this.picture = picture;
     }
 }
