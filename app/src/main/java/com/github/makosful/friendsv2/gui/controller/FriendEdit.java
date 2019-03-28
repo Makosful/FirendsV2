@@ -2,11 +2,13 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
+import com.github.makosful.friendsv2.gui.model.MyLocationListener;
 
 import java.util.Objects;
 
@@ -37,6 +40,12 @@ public class FriendEdit extends AppCompatActivity
     private ImageView imageView;
 
     private LocationManager locationManager;
+    private LocationListener locationListener;
+
+    public FriendEdit()
+    {
+        locationListener = new MyLocationListener();
+    }
 
     private static void log(String message)
     {
@@ -164,7 +173,9 @@ public class FriendEdit extends AppCompatActivity
 
     public void setHome(View view)
     {
+        log("Getting last known location");
         Location location = getLastKnownLocation();
+
 
         String s = "(" + location.getLatitude() + ";" + location.getLongitude() + ")";
 
@@ -185,8 +196,16 @@ public class FriendEdit extends AppCompatActivity
             GPSPermissionGiven = true;
 
         }
-        return GPSPermissionGiven ? locationManager
-                .getLastKnownLocation(LocationManager.GPS_PROVIDER): null;
+
+        if (GPSPermissionGiven)
+        {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 1, locationListener);
+            locationManager.removeUpdates(locationListener);
+
+            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        else
+            return null;
     }
 
     /**
