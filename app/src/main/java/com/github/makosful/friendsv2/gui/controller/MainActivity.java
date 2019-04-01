@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        model = new MainModel();
+        model = new MainModel(this);
         List<Friend> friendList = model.getFriendList();
 
         adapter = new FriendAdapter(friendList, this);

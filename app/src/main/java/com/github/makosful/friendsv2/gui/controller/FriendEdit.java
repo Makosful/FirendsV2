@@ -69,7 +69,7 @@ public class FriendEdit extends AppCompatActivity
         txtName = findViewById(R.id.txt_friend_edit_name);
         txtName.setText(friend.getName());
         txtPhone = findViewById(R.id.txt_friend_edit_phone);
-        txtPhone.setText(friend.getNumber());
+        txtPhone.setText(friend.getPhone());
         txtEmail = findViewById(R.id.txt_friend_edit_email);
         txtEmail.setText(friend.getEmail());
         imageView = findViewById(R.id.iv_friend_edit_image);
@@ -123,7 +123,7 @@ public class FriendEdit extends AppCompatActivity
 
         log("Overriding values in Friend");
         friend.setName(txtName.getText().toString());
-        friend.setNumber(txtPhone.getText().toString());
+        friend.setPhone(txtPhone.getText().toString());
         friend.setEmail(txtEmail.getText().toString());
         log("Override complete");
 

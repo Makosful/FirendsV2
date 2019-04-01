@@ -36,7 +36,17 @@ public class SQLiteFriends implements IStorage<Friend>
     private static final String FIELD_PICTURE = "picture";
 
     private static String INSERT = "INSERT INTO " + TABLE_NAME +
-                                   "(name, address, latitude, longitue, phone, email, website, birthday, picture) " +
+                                   "(" +
+                                   FIELD_NAME + ", " +
+                                   FIELD_ADDRESS + ", " +
+                                   FIELD_LATITUDE + ", " +
+                                   FIELD_LONGITUDE + ", " +
+                                   FIELD_PHONE + ", " +
+                                   FIELD_EMAIL + ", " +
+                                   FIELD_WEBSITE + ", " +
+                                   FIELD_BIRTHDAY + ", " +
+                                   FIELD_PICTURE +
+                                   ") " +
                                    "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private SQLiteDatabase database;
@@ -46,7 +56,10 @@ public class SQLiteFriends implements IStorage<Friend>
     {
         OpenHelper openHelper = new OpenHelper(context);
         this.database = openHelper.getWritableDatabase();
+        dropTable();
+        createTable();
         this.insertStatement = this.database.compileStatement(INSERT);
+        seed();
     }
 
     private static void log(String message)
@@ -55,31 +68,64 @@ public class SQLiteFriends implements IStorage<Friend>
     }
 
     @Override
-    public boolean create(Friend item)
+    public boolean create(Friend friend)
     {
         log("Attempting to store Friend in database");
 
         try
         {
-            log("Converts bitmap to byte array");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            item.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            log("Conversion successfully");
+            byte[] bytes = new byte[0];
 
-            log("Attempts to close conversion stream");
-            stream.close();
-            log("stream closed");
+            if (friend.getPicture() != null)
+            {
+                log("Converts bitmap to byte array");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                friend.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                bytes = stream.toByteArray();
+                log("Conversion successfully");
+
+                log("Attempts to close conversion stream");
+                stream.close();
+                log("stream closed");
+            }
 
             int i = 0;
-            this.insertStatement.bindString(++i, item.getName()); // 1
-            this.insertStatement.bindString(++i, item.getAdress()); // 2
-            this.insertStatement.bindDouble(++i, item.getLatitude()); // 3
-            this.insertStatement.bindDouble(++i, item.getLongitude()); // 4
-            this.insertStatement.bindString(++i, item.getPhone()); // 5
-            this.insertStatement.bindString(++i, item.getEmail()); // 6
-            this.insertStatement.bindString(++i, item.getWebsite()); // 7
-            this.insertStatement.bindLong(++i, item.getBirthDate().getTime()); // 8
+
+            this.insertStatement.bindString(++i, friend.getName()); // 1
+
+            String address = friend.getAddress();
+            if (address == null)
+                this.insertStatement.bindNull(++i); // 2
+            else
+                this.insertStatement.bindString(++i, address); // 2
+
+            this.insertStatement.bindDouble(++i, friend.getLatitude()); // 3
+            this.insertStatement.bindDouble(++i, friend.getLongitude()); // 4
+
+            String phone = friend.getPhone();
+            if (phone == null)
+                this.insertStatement.bindNull(++i); // 5
+            else
+                this.insertStatement.bindString(++i, phone); // 5
+
+            String email = friend.getEmail();
+            if (email == null)
+                this.insertStatement.bindNull(++i); // 6
+            else
+                this.insertStatement.bindString(++i, email); // 6
+
+            String website = friend.getWebsite();
+            if (website == null)
+                this.insertStatement.bindNull(++i); // 7
+            else
+                this.insertStatement.bindString(++i, website); // 7
+
+            Date birthDate = friend.getBirthDate();
+            if (birthDate == null)
+                this.insertStatement.bindNull(++i); // 8
+            else
+                this.insertStatement.bindLong(++i, birthDate.getTime()); // 8
+
             this.insertStatement.bindBlob(++i, bytes); // 9
 
             log("Attempts to execute INSERT statement for Friend");
@@ -96,7 +142,10 @@ public class SQLiteFriends implements IStorage<Friend>
         finally
         {
             log("Recycles the bitmap");
-            item.getPicture().recycle();
+            if (friend.getPicture() != null)
+            {
+                friend.getPicture().recycle();
+            }
         }
     }
 
@@ -228,7 +277,7 @@ public class SQLiteFriends implements IStorage<Friend>
 
             ContentValues cv = new ContentValues();
             cv.put(FIELD_NAME, item.getName());
-            cv.put(FIELD_NAME, item.getAdress());
+            cv.put(FIELD_NAME, item.getAddress());
             cv.put(FIELD_NAME, item.getLatitude());
             cv.put(FIELD_NAME, item.getLongitude());
             cv.put(FIELD_NAME, item.getPhone());
@@ -274,7 +323,39 @@ public class SQLiteFriends implements IStorage<Friend>
         return result >= 1;
     }
 
-    private static class OpenHelper extends SQLiteOpenHelper
+    @Override
+    public void seed()
+    {
+        Friend friend = new Friend();
+        friend.setName("Bob Ross");
+        friend.setPhone("51239875");
+        friend.setEmail("bob@ross.paint");
+
+        create(friend);
+    }
+
+    private void createTable()
+    {
+        database.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
+                               FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                               FIELD_NAME + " TEXT, " +
+                               FIELD_ADDRESS + " TEXT, " +
+                               FIELD_LATITUDE + " NUM, " +
+                               FIELD_LONGITUDE + " NUM, " +
+                               FIELD_PHONE + " TEXT, " +
+                               FIELD_EMAIL + " TEXT, " +
+                               FIELD_WEBSITE + " TEXT, " +
+                               FIELD_BIRTHDAY + " INTEGER, " +
+                               FIELD_PICTURE + " BLOB" +
+                               ")");
+    }
+
+    private void dropTable()
+    {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
+    }
+
+    private class OpenHelper extends SQLiteOpenHelper
     {
 
         OpenHelper(Context context)
@@ -285,18 +366,7 @@ public class SQLiteFriends implements IStorage<Friend>
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase)
         {
-            sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
-                                   FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                                   FIELD_NAME + " TEXT, " +
-                                   FIELD_ADDRESS + " TEXT, " +
-                                   FIELD_LATITUDE + "NUM, " +
-                                   FIELD_LONGITUDE + "NUM, " +
-                                   FIELD_PHONE + " TEXT, " +
-                                   FIELD_EMAIL + " TEXT, " +
-                                   FIELD_WEBSITE + " TEXT, " +
-                                   FIELD_BIRTHDAY + " INTEGER, " +
-                                   FIELD_PICTURE + " BLOB" +
-                                   ")");
+            createTable();
         }
 
         @Override

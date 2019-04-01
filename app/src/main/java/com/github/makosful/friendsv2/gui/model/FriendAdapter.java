@@ -56,7 +56,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Log.d(TAG, "Retrieved friend: " + friend.getName());
 
         Log.d(TAG, "Setting friend image");
-        viewHolder.image.setImageBitmap(friend.getImage());
+        viewHolder.image.setImageBitmap(friend.getPicture());
 
         Log.d(TAG, "Setting friend name");
         viewHolder.name.setText(friend.getName());
@@ -117,7 +117,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     private void openTextService(Friend friend)
     {
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.setData(Uri.parse("sms:" + friend.getNumber()));
+        sendIntent.setData(Uri.parse("sms:" + friend.getPhone()));
         sendIntent.putExtra("sms_body", "Hi, it goes well on the android course...");
         context.startActivity(sendIntent);
     }
@@ -125,7 +125,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     private void openPhoneService(Friend friend)
     {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + friend.getNumber()));
+        intent.setData(Uri.parse("tel:" + friend.getPhone()));
         context.startActivity(intent);
     }
 

@@ -44,4 +44,6 @@ public interface IStorage<T>
      * @return Returns true if the item was deleted. False if any error was encountered
      */
     boolean deleteById(int id);
+
+    void seed();
 }

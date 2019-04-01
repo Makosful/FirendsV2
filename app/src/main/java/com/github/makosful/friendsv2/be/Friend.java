@@ -39,7 +39,7 @@ public class Friend implements Serializable
         this.name = name;
     }
 
-    public String getAdress()
+    public String getAddress()
     {
         return adress;
     }

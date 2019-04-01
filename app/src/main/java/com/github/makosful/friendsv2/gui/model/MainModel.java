@@ -1,25 +1,26 @@
 package com.github.makosful.friendsv2.gui.model;
 
+import android.content.Context;
+
 import com.github.makosful.friendsv2.be.Friend;
+import com.github.makosful.friendsv2.dal.IStorage;
+import com.github.makosful.friendsv2.dal.SQLiteFriends;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainModel
 {
-    private List<Friend> friendList;
+    private IStorage<Friend> friendStorage;
 
-    public MainModel()
+    public MainModel(Context context)
     {
-        friendList = new ArrayList<>();
-        Friend friend = new Friend("Bob Ross");
-        friend.setNumber("12983476");
-        friend.setEmail("bob@ross.com");
-        friendList.add(friend);
+        friendStorage = new SQLiteFriends(context);
+        //friendStorage.seed();
     }
 
     public List<Friend> getFriendList()
     {
-        return friendList;
+        return friendStorage.readAll();
     }
 }

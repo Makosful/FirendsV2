@@ -39,7 +39,7 @@ public class FriendDetail extends AppCompatActivity
         name = findViewById(R.id.tv_friend_list_name);
         name.setText(friend.getName());
         phone = findViewById(R.id.tv_friend_detail_phone);
-        phone.setText(friend.getNumber());
+        phone.setText(friend.getPhone());
         email = findViewById(R.id.tv_friend_detail_email);
         email.setText(friend.getEmail());
 
@@ -81,7 +81,7 @@ public class FriendDetail extends AppCompatActivity
         log("Logging changes to Friend");
         this.friend = friend;
         this.name.setText(friend.getName());
-        this.phone.setText(friend.getNumber());
+        this.phone.setText(friend.getPhone());
         this.email.setText(friend.getEmail());
     }
 
