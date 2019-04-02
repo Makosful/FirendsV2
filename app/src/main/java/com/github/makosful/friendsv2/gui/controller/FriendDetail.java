@@ -23,6 +23,7 @@ public class FriendDetail extends AppCompatActivity {
     private TextView name;
     private TextView phone;
     private TextView email;
+    private TextView website;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,15 @@ public class FriendDetail extends AppCompatActivity {
         log("Setting default values from Friend");
         name = findViewById(R.id.tv_friend_list_name);
         name.setText(friend.getName());
+
         phone = findViewById(R.id.tv_friend_detail_phone);
         phone.setText(friend.getPhone());
+
         email = findViewById(R.id.tv_friend_detail_email);
         email.setText(friend.getEmail());
+
+        website = findViewById(R.id.tv_friend_detail_website);
+        website.setText(friend.getWebsite());
 
         log("Finished creating Friend Detail");
     }

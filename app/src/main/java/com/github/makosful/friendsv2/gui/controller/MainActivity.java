@@ -1,15 +1,9 @@
 package com.github.makosful.friendsv2.gui.controller;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.model.MainModel;

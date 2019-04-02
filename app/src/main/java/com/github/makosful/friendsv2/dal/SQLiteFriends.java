@@ -57,6 +57,7 @@ public class SQLiteFriends implements IStorage<Friend>
         OpenHelper openHelper = new OpenHelper(context);
         this.database = openHelper.getWritableDatabase();
         this.insertStatement = this.database.compileStatement(INSERT);
+        seed();
     }
 
     private static void log(String message)
@@ -330,7 +331,7 @@ public class SQLiteFriends implements IStorage<Friend>
         friend.setName("Bob Ross");
         friend.setPhone("51239875");
         friend.setEmail("bob@ross.paint");
-
+        friend.setWebsite("https://www.bobross.com/");
         create(friend);
     }
 
