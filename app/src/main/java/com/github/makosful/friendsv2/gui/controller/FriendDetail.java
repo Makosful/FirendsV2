@@ -129,4 +129,8 @@ public class FriendDetail extends AppCompatActivity {
             log("Cannot visit website to friend: Website is not set");
         }
     }
+
+    public void updateFriendPicture(View view) {
+        
+    }
 }
