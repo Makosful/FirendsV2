@@ -56,10 +56,7 @@ public class SQLiteFriends implements IStorage<Friend>
     {
         OpenHelper openHelper = new OpenHelper(context);
         this.database = openHelper.getWritableDatabase();
-        dropTable();
-        createTable();
         this.insertStatement = this.database.compileStatement(INSERT);
-        seed();
     }
 
     private static void log(String message)
@@ -323,6 +320,9 @@ public class SQLiteFriends implements IStorage<Friend>
         return result >= 1;
     }
 
+    /**
+     * Seeds the SQLite DB with a template
+     */
     @Override
     public void seed()
     {
@@ -334,9 +334,9 @@ public class SQLiteFriends implements IStorage<Friend>
         create(friend);
     }
 
-    private void createTable()
+    private void createTable(SQLiteDatabase db)
     {
-        database.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (" +
                                FIELD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                FIELD_NAME + " TEXT, " +
                                FIELD_ADDRESS + " TEXT, " +
@@ -350,9 +350,9 @@ public class SQLiteFriends implements IStorage<Friend>
                                ")");
     }
 
-    private void dropTable()
+    private void dropTable(SQLiteDatabase db)
     {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
     }
 
     private class OpenHelper extends SQLiteOpenHelper
@@ -366,7 +366,7 @@ public class SQLiteFriends implements IStorage<Friend>
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase)
         {
-            createTable();
+            createTable(sqLiteDatabase);
         }
 
         @Override

@@ -46,6 +46,15 @@ public class FriendDetail extends AppCompatActivity
         log("Finished creating Friend Detail");
     }
 
+    public void showFriendOnMap(View view) {
+        log("Creating Map Activity");
+        Intent i = new Intent(this, MapsActivity.class);
+        i.putExtra(Common.INTENT_MAP_ACTIVITY, friend);
+
+        log("Starting Map activity");
+        startActivity(i);
+    }
+
     public void editFriend(View view)
     {
         log("Preparing to edit Friend");
