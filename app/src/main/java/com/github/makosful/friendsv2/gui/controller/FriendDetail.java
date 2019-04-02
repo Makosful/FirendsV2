@@ -98,4 +98,23 @@ public class FriendDetail extends AppCompatActivity
     {
         Log.d(TAG, message);
     }
+
+    public void sendFriendEmail(View view) {
+        if(this.friend.getEmail() != null)
+        {
+            log("Sending email to " + this.friend.getName());
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("plain/text");
+            String[] receivers = { this.friend.getEmail() };
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, receivers);
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+            emailIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Email Text");
+            startActivity(emailIntent);
+        }
+        else {
+            log("Cannot send email to friend: Email is not set");
+        }
+
+    }
 }
