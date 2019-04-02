@@ -2,6 +2,7 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,7 @@ import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 
-public class FriendDetail extends AppCompatActivity
-{
+public class FriendDetail extends AppCompatActivity {
     private static final String TAG = "FriendDetail";
 
     private Friend friend;
@@ -25,8 +25,7 @@ public class FriendDetail extends AppCompatActivity
     private TextView email;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         log("Creating Friend Detail");
 
         super.onCreate(savedInstanceState);
@@ -55,8 +54,7 @@ public class FriendDetail extends AppCompatActivity
         startActivity(i);
     }
 
-    public void editFriend(View view)
-    {
+    public void editFriend(View view) {
         log("Preparing to edit Friend");
 
         Intent i = new Intent(this, FriendEdit.class);
@@ -68,25 +66,24 @@ public class FriendDetail extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         log("Returning from Friend Edit");
 
-        Friend friend = (Friend)data.getExtras().get(Common.INTENT_FRIEND_EDIT_RESULT);
+        Friend friend = (Friend) data.getExtras().get(Common.INTENT_FRIEND_EDIT_RESULT);
 
         log("Parsing result code");
-        switch (resultCode)
-        {
+        switch (resultCode) {
             case Activity.RESULT_OK:
                 log("Results came back as OK");
                 saveResult(friend);
                 break;
-            default: Toast.makeText(this, "", Toast.LENGTH_SHORT).show(); break;
+            default:
+                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
-    private void saveResult(Friend friend)
-    {
+    private void saveResult(Friend friend) {
         log("Logging changes to Friend");
         this.friend = friend;
         this.name.setText(friend.getName());
@@ -94,27 +91,36 @@ public class FriendDetail extends AppCompatActivity
         this.email.setText(friend.getEmail());
     }
 
-    private void log(String message)
-    {
+    private void log(String message) {
         Log.d(TAG, message);
     }
 
     public void sendFriendEmail(View view) {
-        if(this.friend.getEmail() != null)
-        {
+        if (this.friend.getEmail() != null) {
             log("Sending email to " + this.friend.getName());
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setType("plain/text");
-            String[] receivers = { this.friend.getEmail() };
+            String[] receivers = {this.friend.getEmail()};
             emailIntent.putExtra(Intent.EXTRA_EMAIL, receivers);
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
             emailIntent.putExtra(Intent.EXTRA_TEXT,
                     "Email Text");
             startActivity(emailIntent);
-        }
-        else {
+        } else {
             log("Cannot send email to friend: Email is not set");
         }
 
+    }
+
+    public void visitFriendWebsite(View view) {
+        String website = this.friend.getWebsite();
+        if (website != null) {
+            log("Visiting the website of " + this.friend.getName());
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(website));
+            startActivity(i);
+        } else {
+            log("Cannot visit website to friend: Website is not set");
+        }
     }
 }

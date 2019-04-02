@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -59,12 +58,27 @@
         app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
         tools:text="bob@ross.paint" />
 
+    <TextView
+        android:id="@+id/tv_friend_detail_email2"
+        android:layout_width="237dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="visitFriendWebsite"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_email"
+        tools:text="" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="64dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="editFriend"
@@ -77,13 +91,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:onClick="showFriendOnMap"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_email2"
         app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
     <TextView
@@ -92,10 +107,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Show on Map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/btnOpenMap"
+        app:layout_constraintStart_toStartOf="@+id/btnOpenMap"
         app:layout_constraintTop_toBottomOf="@+id/btnOpenMap" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="Edit Friend"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton2"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton2"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton2" />
 
 </android.support.constraint.ConstraintLayout>
