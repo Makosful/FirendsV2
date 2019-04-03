@@ -14,22 +14,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 {
 
-    private MainModel model;
-
-    private RecyclerView recyclerView;
-    private FriendAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        model = new MainModel(this);
+        MainModel model = new MainModel(this);
         List<Friend> friendList = model.getFriendList();
 
-        adapter = new FriendAdapter(friendList, this);
-        recyclerView = findViewById(R.id.rv_friendList);
+        FriendAdapter adapter = new FriendAdapter(this, friendList);
+        RecyclerView recyclerView = findViewById(R.id.rv_friendList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

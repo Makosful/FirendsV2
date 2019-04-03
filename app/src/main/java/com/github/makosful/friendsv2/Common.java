@@ -6,6 +6,7 @@ public class Common
     public static final String INTENT_FRIEND_EDIT = "friendEdit";
     public static final String INTENT_FRIEND_EDIT_RESULT = "friendEditResult";
     public static final String INTENT_MAP_ACTIVITY = "MapActivity";
+    public static final String DATA_FRIEND_DETAIL = "dataFriendDetail";
 
     public static final int FEATURE_REQUEST_CODE_CAMERA         = 101;
     public static final int ACTIVITY_REQUEST_CODE_FRIEND_EDIT   = 201;

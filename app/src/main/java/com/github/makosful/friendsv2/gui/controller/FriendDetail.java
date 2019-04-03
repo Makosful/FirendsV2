@@ -15,6 +15,8 @@ import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 
+import java.util.Objects;
+
 public class FriendDetail extends AppCompatActivity {
     private static final String TAG = "FriendDetail";
 
@@ -33,7 +35,7 @@ public class FriendDetail extends AppCompatActivity {
         setContentView(R.layout.activity_friend_detail);
 
         log("Retrieving Friend from extras");
-        friend = (Friend) getIntent().getExtras().get(Common.INTENT_FRIEND_DETAIL);
+        friend = (Friend) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
 
         log("Setting default values from Friend");
         name = findViewById(R.id.tv_friend_list_name);

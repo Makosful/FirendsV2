@@ -2,16 +2,16 @@ package com.github.makosful.friendsv2.gui.model;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
@@ -24,16 +24,18 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 {
     private static final String TAG = "Friend Adapter";
 
-    private List<Friend> friendList;
     private Context context;
+    private List<Friend> friendList;
 
-    public FriendAdapter(List<Friend> friendList, Context context)
+    public FriendAdapter(Context context, List<Friend> friendList)
     {
-        this.friendList = friendList;
         this.context = context;
+        this.friendList = friendList;
 
         Log.d(TAG, "Adapter has been created");
     }
+
+
 
     @NonNull
     @Override
@@ -41,7 +43,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
     {
         Log.d(TAG, "Creating ViewHolder");
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.adapter_layout_friends, null);
+        View view = inflater.inflate(R.layout.adapter_layout_friends, viewGroup, false);
         FriendViewHolder viewHolder = new FriendViewHolder(view);
         Log.d(TAG, "ViewHolder created");
         return viewHolder;
@@ -55,51 +57,25 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         final Friend friend = friendList.get(position);
         Log.d(TAG, "Retrieved friend: " + friend.getName());
 
-        Log.d(TAG, "Setting friend image");
-        viewHolder.image.setImageBitmap(friend.getPicture());
+        // Log.d(TAG, "Setting friend image");
+        // viewHolder.image.setImageBitmap(friend.getPicture());
 
         Log.d(TAG, "Setting friend name");
         viewHolder.name.setText(friend.getName());
 
-        Log.d(TAG, "Creating onclickListener for detail view");
-        viewHolder.details.setOnClickListener(new View.OnClickListener()
-        {
+        viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                openDetailsWindow(friend);
+            public void onClick(View v) {
+                openDetailView(friend);
             }
         });
+    }
 
-        Log.d(TAG, "Setting onClickListener for SMS service");
-        viewHolder.text.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openTextService(friend);
-            }
-        });
-
-        Log.d(TAG, "Setting onClickListener for phone service");
-        viewHolder.call.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openPhoneService(friend);
-            }
-        });
-
-        Log.d(TAG, "Setting onClickListener for mail service");
-        viewHolder.mail.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openMailService(friend);
-            }
-        });
+    private void openDetailView(Friend friend) {
+        Intent i = new Intent(context, FriendDetail.class);
+        i.putExtra(Common.DATA_FRIEND_DETAIL, friend);
+        context.startActivity(i);
+        // Toast.makeText(context, "Showing Friend: " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -108,64 +84,21 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return friendList.size();
     }
 
-    private void openDetailsWindow(Friend friend)
-    {
-        Log.d(TAG, "Opening detailed friend view");
-        Intent intent = new Intent(context, FriendDetail.class);
-
-        Log.d(TAG, "Adding friend to intent extra");
-        intent.putExtra(Common.INTENT_FRIEND_DETAIL, friend);
-
-        Log.d(TAG, "Starting new intent");
-        context.startActivity(intent);
-    }
-
-    private void openTextService(Friend friend)
-    {
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.setData(Uri.parse("sms:" + friend.getPhone()));
-        sendIntent.putExtra("sms_body", "Hi, it goes well on the android course...");
-        context.startActivity(sendIntent);
-    }
-
-    private void openPhoneService(Friend friend)
-    {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + friend.getPhone()));
-        context.startActivity(intent);
-    }
-
-    private void openMailService(Friend friend)
-    {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("plain/text");
-        String[] receivers = { friend.getEmail() };
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, receivers);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Test");
-        emailIntent.putExtra(Intent.EXTRA_TEXT,
-                             "Hej, Hope that it is ok, Best Regards android...;-)");
-        context.startActivity(emailIntent);
-    }
 
     class FriendViewHolder extends RecyclerView.ViewHolder
     {
         private ImageView image;
         private TextView name;
-        private ImageButton details;
-        private ImageButton text;
-        private ImageButton call;
-        private ImageButton mail;
+        private LinearLayout parent;
 
         FriendViewHolder(@NonNull View itemView)
         {
             super(itemView);
 
-            image = itemView.findViewById(R.id.iv_friend_list_image);
+            // image = itemView.findViewById(R.id.iv_friend_list_image);
             name = itemView.findViewById(R.id.tv_friend_list_name);
-            details = itemView.findViewById(R.id.btn_friend_list_details);
-            text = itemView.findViewById(R.id.btn_friend_list_sms);
-            call = itemView.findViewById(R.id.btn_friend_list_call);
-            mail = itemView.findViewById(R.id.btn_friend_list_mail);
+
+            parent = itemView.findViewById(R.id.parent_layout);
         }
     }
 }
