@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,20 +12,27 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
+import com.github.makosful.friendsv2.dal.IStorage;
+import com.github.makosful.friendsv2.dal.SQLiteFriends;
+import com.github.makosful.friendsv2.gui.model.MainModel;
 
 import java.util.Objects;
 
 public class FriendDetail extends AppCompatActivity {
     private static final String TAG = "FriendDetail";
 
+    private MainModel model;
+
     private Friend friend;
 
+    private ImageView image;
     private TextView name;
     private TextView phone;
     private TextView email;
@@ -41,6 +49,8 @@ public class FriendDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
 
+        this.model = new MainModel(this);
+
         log("Retrieving Friend from extras");
         friend = (Friend) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
 
@@ -56,6 +66,8 @@ public class FriendDetail extends AppCompatActivity {
 
         website = findViewById(R.id.tv_friend_detail_website);
         website.setText(friend.getWebsite());
+
+        image = findViewById(R.id.iv_friend_detail_image);
 
         log("Finished creating Friend Detail");
     }
@@ -90,11 +102,19 @@ public class FriendDetail extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Launches the default browser and loads the friend's website
+     * @param view unused
+     */
     public void openWebsite(View view) {
         Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(friend.getWebsite()));
         startActivity(i);
     }
 
+    /**
+     * Launches the default Mail application
+     * @param view Unused
+     */
     public void openMail(View view) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("plain/text");
@@ -104,19 +124,30 @@ public class FriendDetail extends AppCompatActivity {
         startActivity(emailIntent);
     }
 
+    /**
+     * Launches the default phone application
+     * @param view Unused
+     */
     public void openCall(View view) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + friend.getPhone()));
         startActivity(intent);
     }
 
+    /**
+     * Launches the default SMS application
+     * @param view Unused
+     */
     public void openText(View view) {
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         sendIntent.setData(Uri.parse("sms:" + friend.getPhone()));
         startActivity(sendIntent);
     }
 
-    // Edit BEGIN
+    /**
+     * Launches the Edit Friend activity
+     * @param view Unused
+     */
     public void editFriend(View view) {
         log("Preparing to edit Friend");
 
@@ -128,6 +159,10 @@ public class FriendDetail extends AppCompatActivity {
         startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_EDIT);
     }
 
+    /**
+     * Saves the edit of the Friend to the storage
+     * @param data The intent returned from the EditFriend activity
+     */
     private void handleEditResult(Intent data) {
         log("Returning from Friend Edit");
         assert data != null;
@@ -141,9 +176,11 @@ public class FriendDetail extends AppCompatActivity {
         this.email.setText(friend.getEmail());
         this.website.setText(friend.getWebsite());
     }
-    // Edit END
 
-    // Camera BEGIN
+    /**
+     * Launches the default camera app
+     * @param view Unused
+     */
     public void updatePicture(View view) {
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
             requestPermissions( new String[]{Manifest.permission.CAMERA},
@@ -163,7 +200,21 @@ public class FriendDetail extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the image taken to the friend.
+     * @param data The Intent returned from the camera app.
+     */
     private void handleCameraResult(Intent data) {
+        log("Handling image from camera");
+
+        Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
+        log("Retrieved the image");
+
+        friend.setPicture(bitmap);
+        log("Assigned the image");
+
+        image.setImageBitmap(friend.getPicture());
+        // model.save(friend);
+        log("Updated the friend");
     }
-    // Camera END
 }

@@ -16,11 +16,19 @@ public class MainModel
     public MainModel(Context context)
     {
         friendStorage = new SQLiteFriends(context);
-        friendStorage.seed();
+        // friendStorage.seed();
     }
 
     public List<Friend> getFriendList()
     {
         return friendStorage.readAll();
+    }
+
+    public void save(Friend friend) {
+        friendStorage.update(friend);
+    }
+
+    public void seed() {
+        friendStorage.seed();
     }
 }
