@@ -53,6 +53,24 @@ public class FriendDetail extends AppCompatActivity {
         log("Finished creating Friend Detail");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        log("Returning from Friend Edit");
+
+        Friend friend = (Friend) data.getExtras().get(Common.INTENT_FRIEND_EDIT_RESULT);
+
+        log("Parsing result code");
+        switch (resultCode) {
+            case Activity.RESULT_OK:
+                log("Results came back as OK");
+                saveResult(friend);
+                break;
+            default:
+                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
     public void showFriendOnMap(View view) {
         log("Creating Map Activity");
         Intent i = new Intent(this, MapsActivity.class);
@@ -73,30 +91,13 @@ public class FriendDetail extends AppCompatActivity {
         startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_EDIT);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        log("Returning from Friend Edit");
-
-        Friend friend = (Friend) data.getExtras().get(Common.INTENT_FRIEND_EDIT_RESULT);
-
-        log("Parsing result code");
-        switch (resultCode) {
-            case Activity.RESULT_OK:
-                log("Results came back as OK");
-                saveResult(friend);
-                break;
-            default:
-                Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-
     private void saveResult(Friend friend) {
         log("Logging changes to Friend");
         this.friend = friend;
         this.name.setText(friend.getName());
         this.phone.setText(friend.getPhone());
         this.email.setText(friend.getEmail());
+        this.website.setText(friend.getWebsite());
     }
 
     private void log(String message) {
@@ -117,7 +118,6 @@ public class FriendDetail extends AppCompatActivity {
         } else {
             log("Cannot send email to friend: Email is not set");
         }
-
     }
 
     public void visitFriendWebsite(View view) {
@@ -132,19 +132,29 @@ public class FriendDetail extends AppCompatActivity {
         }
     }
 
-    public void updateFriendPicture(View view) {
-        
-    }
-
     public void openWebsite(View view) {
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(friend.getWebsite()));
+        startActivity(i);
     }
 
     public void openMail(View view) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("plain/text");
+        String[] receivers = { friend.getEmail() };
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, receivers);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Test");
+        startActivity(emailIntent);
     }
 
     public void openCall(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + friend.getPhone()));
+        startActivity(intent);
     }
 
     public void openText(View view) {
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        sendIntent.setData(Uri.parse("sms:" + friend.getPhone()));
+        startActivity(sendIntent);
     }
 }
