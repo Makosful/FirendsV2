@@ -2,7 +2,6 @@ package com.github.makosful.friendsv2;
 
 public class Common
 {
-    public static final String INTENT_FRIEND_DETAIL = "friendDetail";
     public static final String INTENT_FRIEND_EDIT = "friendEdit";
     public static final String INTENT_FRIEND_EDIT_RESULT = "friendEditResult";
     public static final String INTENT_MAP_ACTIVITY = "MapActivity";
