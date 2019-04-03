@@ -102,6 +102,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         });
     }
 
+    @Override
+    public int getItemCount()
+    {
+        return friendList.size();
+    }
+
     private void openDetailsWindow(Friend friend)
     {
         Log.d(TAG, "Opening detailed friend view");
@@ -141,12 +147,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         context.startActivity(emailIntent);
     }
 
-    @Override
-    public int getItemCount()
-    {
-        return friendList.size();
-    }
-
     class FriendViewHolder extends RecyclerView.ViewHolder
     {
         private ImageView image;
@@ -156,7 +156,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         private ImageButton call;
         private ImageButton mail;
 
-        public FriendViewHolder(@NonNull View itemView)
+        FriendViewHolder(@NonNull View itemView)
         {
             super(itemView);
 
