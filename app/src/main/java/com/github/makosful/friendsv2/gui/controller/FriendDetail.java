@@ -135,4 +135,16 @@ public class FriendDetail extends AppCompatActivity {
     public void updateFriendPicture(View view) {
         
     }
+
+    public void openWebsite(View view) {
+    }
+
+    public void openMail(View view) {
+    }
+
+    public void openCall(View view) {
+    }
+
+    public void openText(View view) {
+    }
 }

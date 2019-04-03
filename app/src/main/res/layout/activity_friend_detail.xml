@@ -12,8 +12,10 @@
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/friend_detail_image"
         android:onClick="updateFriendPicture"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -22,64 +24,118 @@
         android:id="@+id/tv_friend_list_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_friend_detail_image"
         tools:text="Bob Ross" />
 
     <TextView
         android:id="@+id/tv_friend_detail_phone"
-        android:layout_width="237dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_friend_detail_sms"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_list_name"
+        tools:text="+45 12 98 34 76" />
+
+    <ImageButton
+        android:id="@+id/ib_friend_detail_sms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textSize="24sp"
+        android:onClick="openText"
+        app:layout_constraintBottom_toTopOf="@+id/tv_friend_detail_email"
+        app:layout_constraintEnd_toStartOf="@+id/ib_friend_detail_call"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_list_name"
+        app:srcCompat="@drawable/baseline_message_24"
+        android:contentDescription="@string/friend_text" />
+
+    <ImageButton
+        android:id="@+id/ib_friend_detail_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="openCall"
         app:layout_constraintBottom_toTopOf="@+id/tv_friend_detail_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
         app:layout_constraintTop_toBottomOf="@+id/tv_friend_list_name"
-        tools:text="+45 12 98 34 76" />
+        app:srcCompat="@drawable/baseline_phone_24"
+        android:contentDescription="@string/friend_call" />
 
     <TextView
         android:id="@+id/tv_friend_detail_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:onClick="sendFriendEmail"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_friend_detail_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
+        app:layout_constraintEnd_toStartOf="@+id/ib_friend_detail_mail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_phone"
         tools:text="bob@ross.paint" />
+
+    <ImageButton
+        android:id="@+id/ib_friend_detail_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="openMail"
+        app:layout_constraintBottom_toTopOf="@+id/tv_friend_detail_website"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_phone"
+        app:srcCompat="@drawable/baseline_email_24"
+        android:contentDescription="@string/friend_mail" />
 
     <TextView
         android:id="@+id/tv_friend_detail_website"
-        android:layout_width="237dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="24dp"
         android:onClick="visitFriendWebsite"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/iv_friend_detail_image"
+        app:layout_constraintEnd_toStartOf="@+id/ib_friend_detail_website"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_email"
-        tools:text="" />
+        tools:text="exmaple.com/bobross" />
+
+    <ImageButton
+        android:id="@+id/ib_friend_detail_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="openWebsite"
+        app:layout_constraintBottom_toTopOf="@+id/btnOpenMap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_email"
+        app:srcCompat="@drawable/baseline_public_24"
+        android:contentDescription="@string/friend_web" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="editFriend"
@@ -91,38 +147,13 @@
         android:id="@+id/btnOpenMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:clickable="true"
+        android:focusable="true"
         android:onClick="showFriendOnMap"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_friend_detail_website"
         app:srcCompat="@android:drawable/ic_menu_myplaces" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Show on Map"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/btnOpenMap"
-        app:layout_constraintStart_toStartOf="@+id/btnOpenMap"
-        app:layout_constraintTop_toBottomOf="@+id/btnOpenMap" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:text="Edit Friend"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton2"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton2"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton2" />
 
 </android.support.constraint.ConstraintLayout>
