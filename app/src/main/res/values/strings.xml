@@ -6,6 +6,7 @@
     <string name="friend_text">SMS</string>
     <string name="friend_call">call</string>
     <string name="friend_mail">Email</string>
+    <string name="friend_web">Website</string>
 
     <string name="friend_detail_image">profile image</string>
 
