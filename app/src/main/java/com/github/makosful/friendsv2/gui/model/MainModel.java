@@ -5,8 +5,6 @@ import android.content.Context;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.dal.IStorage;
 import com.github.makosful.friendsv2.dal.SQLiteFriends;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainModel
@@ -23,4 +21,6 @@ public class MainModel
     {
         return friendStorage.readAll();
     }
+
+    public boolean saveChangesToFriend(Friend friend) { return friendStorage.update(friend); }
 }

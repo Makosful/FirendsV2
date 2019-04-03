@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
+import com.github.makosful.friendsv2.gui.model.MainModel;
 
 public class FriendDetail extends AppCompatActivity {
     private static final String TAG = "FriendDetail";
@@ -24,9 +25,12 @@ public class FriendDetail extends AppCompatActivity {
     private TextView phone;
     private TextView email;
     private TextView website;
+    private MainModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        model = new MainModel(this);
+
         log("Creating Friend Detail");
 
         super.onCreate(savedInstanceState);
@@ -95,6 +99,9 @@ public class FriendDetail extends AppCompatActivity {
         this.name.setText(friend.getName());
         this.phone.setText(friend.getPhone());
         this.email.setText(friend.getEmail());
+
+        // save changes to DB
+        this.model.saveChangesToFriend(friend);
     }
 
     private void log(String message) {
@@ -115,7 +122,6 @@ public class FriendDetail extends AppCompatActivity {
         } else {
             log("Cannot send email to friend: Email is not set");
         }
-
     }
 
     public void visitFriendWebsite(View view) {
@@ -131,6 +137,6 @@ public class FriendDetail extends AppCompatActivity {
     }
 
     public void updateFriendPicture(View view) {
-        
+
     }
 }

@@ -1,7 +1,6 @@
 package com.github.makosful.friendsv2.be;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +9,7 @@ public class Friend implements Serializable
 {
     private int id;
     private String name;
-    private String adress;
+    private String address;
     private long latitude;
     private long longitude;
     private String phone;
@@ -41,12 +40,12 @@ public class Friend implements Serializable
 
     public String getAddress()
     {
-        return adress;
+        return address;
     }
 
-    public void setAdress(String adress)
+    public void setAddress(String address)
     {
-        this.adress = adress;
+        this.address = address;
     }
 
     public long getLatitude()

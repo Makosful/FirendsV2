@@ -167,7 +167,7 @@ public class SQLiteFriends implements IStorage<Friend>
             Friend friend = new Friend();
             friend.setId(cursor.getInt(++i));
             friend.setName(cursor.getString(++i));
-            friend.setAdress(cursor.getString(++i));
+            friend.setAddress(cursor.getString(++i));
             friend.setLatitude(cursor.getLong(++i));
             friend.setLongitude(cursor.getLong(++i));
             friend.setPhone(cursor.getString(++i));
@@ -220,7 +220,7 @@ public class SQLiteFriends implements IStorage<Friend>
                 friend.setName(cursor.getString(++i));
 
                 log("Gets the address of Friend(" + friend.getId() + ")");
-                friend.setAdress(cursor.getString(++i));
+                friend.setAddress(cursor.getString(++i));
 
                 log("Gets the location of Friend(" + friend.getId() + ")");
                 friend.setLatitude(cursor.getLong(++i));
@@ -258,14 +258,14 @@ public class SQLiteFriends implements IStorage<Friend>
     }
 
     @Override
-    public boolean update(Friend item)
+    public boolean update(Friend friend)
     {
-        log("Attempts to update Friend " + item.getName());
+        log("Attempts to update Friend " + friend.getName());
         try
         {
             log("Attempts to convert bitmap into byte array");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            item.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
+            friend.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
             byte[] bytes = stream.toByteArray();
             log("Conversion successful");
 
@@ -274,19 +274,19 @@ public class SQLiteFriends implements IStorage<Friend>
             log("Stream closed successfully");
 
             ContentValues cv = new ContentValues();
-            cv.put(FIELD_NAME, item.getName());
-            cv.put(FIELD_NAME, item.getAddress());
-            cv.put(FIELD_NAME, item.getLatitude());
-            cv.put(FIELD_NAME, item.getLongitude());
-            cv.put(FIELD_NAME, item.getPhone());
-            cv.put(FIELD_NAME, item.getEmail());
-            cv.put(FIELD_NAME, item.getWebsite());
-            cv.put(FIELD_NAME, item.getBirthDate().getTime());
+            cv.put(FIELD_NAME, friend.getName());
+            cv.put(FIELD_NAME, friend.getAddress());
+            cv.put(FIELD_NAME, friend.getLatitude());
+            cv.put(FIELD_NAME, friend.getLongitude());
+            cv.put(FIELD_NAME, friend.getPhone());
+            cv.put(FIELD_NAME, friend.getEmail());
+            cv.put(FIELD_NAME, friend.getWebsite());
+            cv.put(FIELD_NAME, friend.getBirthDate().getTime());
             cv.put(FIELD_NAME, bytes);
 
             log("Fires off the UPDATE statement");
             int result = this.database
-                    .update(TABLE_NAME, cv, "id = ?", new String[] {"" + item.getId()});
+                    .update(TABLE_NAME, cv, "id = ?", new String[] {"" + friend.getId()});
 
             return result >= 1;
         }
@@ -299,7 +299,7 @@ public class SQLiteFriends implements IStorage<Friend>
         finally
         {
             log("Recycles the bitmap");
-            item.getPicture().recycle();
+            friend.getPicture().recycle();
         }
     }
 

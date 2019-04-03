@@ -217,6 +217,8 @@ public class FriendEdit extends AppCompatActivity
         // "data" is the Android default for images
         Bitmap img = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
         imageView.setImageBitmap(img);
+        log("picture taken, picture: " + img);
+
     }
 
     /**
