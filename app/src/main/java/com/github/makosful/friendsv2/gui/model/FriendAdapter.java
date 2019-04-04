@@ -74,7 +74,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Intent i = new Intent(context, FriendDetail.class);
         i.putExtra(Common.DATA_FRIEND_DETAIL, id);
         ((Activity)context).startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL);
-        // Toast.makeText(context, "Showing Friend: " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

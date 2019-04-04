@@ -23,8 +23,7 @@ public class MainActivity extends AppCompatActivity
         List<Friend> friendList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -40,8 +39,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Toast.makeText(this, "Request code: " + requestCode + ", Result code: " + resultCode, Toast.LENGTH_SHORT).show();
-
         friendList = model.getFriendList();
         adapter.notifyDataSetChanged();
     }
