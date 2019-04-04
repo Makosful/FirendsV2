@@ -149,6 +149,7 @@ public class SQLiteFriends implements IStorage<Friend>
     @Override
     public Friend readById(int id)
     {
+        Friend friend = null;
         log("Attempts to read Friend with ID " + id);
         Cursor cursor = this.database.query(TABLE_NAME,
                                            new String[] {FIELD_ID, FIELD_NAME, FIELD_ADDRESS,
@@ -159,34 +160,55 @@ public class SQLiteFriends implements IStorage<Friend>
 
         log("Query sent. Result received");
 
-        if (cursor.moveToFirst())
-        {
-            log("Assembles Friend from the database");
-            int i = -1;
-            Friend friend = new Friend();
-            friend.setId(cursor.getInt(++i));
-            friend.setName(cursor.getString(++i));
-            friend.setAddress(cursor.getString(++i));
-            friend.setLatitude(cursor.getLong(++i));
-            friend.setLongitude(cursor.getLong(++i));
-            friend.setPhone(cursor.getString(++i));
-            friend.setEmail(cursor.getString(++i));
-            friend.setWebsite(cursor.getString(++i));
-            friend.setBirthDate(new Date(cursor.getLong(++i)));
+        if (cursor.moveToFirst()) {
+            friend = assembleFriend(cursor);
+        }
+        cursor.close();
 
-            log("Attempts to convert the byte array into a bitmap");
-            byte[] blob = cursor.getBlob(++i);
-            Bitmap bitmap = BitmapFactory
-                    .decodeByteArray(blob, 0, blob.length, new BitmapFactory.Options());
+        return friend;
+    }
+
+    private Friend assembleFriend(Cursor cursor) {
+        int i = -1;
+        Friend friend = new Friend();
+
+        int id = cursor.getInt(++i);
+        friend.setId(id);
+
+        log("Reading the name of Friend with ID: " + id);
+        friend.setName(cursor.getString(++i));
+
+        log("Reading the address of Friend with ID: " + id);
+        friend.setAddress(cursor.getString(++i));
+
+        log("Reading the latitude of Friend with ID: " + id);
+        friend.setLatitude(cursor.getLong(++i));
+
+        log("Reading the longitude of Friend with ID: " + id);
+        friend.setLongitude(cursor.getLong(++i));
+
+        log("Reading the phone of Friend with ID: " + id);
+        friend.setPhone(cursor.getString(++i));
+
+        log("Reading the email of Friend with ID: " + id);
+        friend.setEmail(cursor.getString(++i));
+
+        log("Reading the website of Friend with ID: " + id);
+        friend.setWebsite(cursor.getString(++i));
+
+        log("Reading the birthday of Friend with ID: " + id);
+        friend.setBirthDate(new Date(cursor.getLong(++i)));
+
+        log("Reading the name of Friend with ID: " + id);
+        byte[] blob = cursor.getBlob(++i);
+        if (blob == null) {
+            friend.setPicture(null);
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length, new BitmapFactory.Options());
             friend.setPicture(bitmap);
-
-            cursor.close();
-            return friend;
         }
 
-        log("No friend with the ID " + id + " was found");
-        cursor.close();
-        return null;
+        return friend;
     }
 
     @Override
@@ -210,40 +232,7 @@ public class SQLiteFriends implements IStorage<Friend>
             log("Starts looping through all friends from the database");
             do
             {
-                int i = -1;
-                Friend friend = new Friend();
-                log("Gets the Friend's ID");
-                friend.setId(cursor.getInt(++i));
-
-                log("Gets the name of Friend(" + friend.getId() + ")");
-                friend.setName(cursor.getString(++i));
-
-                log("Gets the address of Friend(" + friend.getId() + ")");
-                friend.setAddress(cursor.getString(++i));
-
-                log("Gets the location of Friend(" + friend.getId() + ")");
-                friend.setLatitude(cursor.getLong(++i));
-                friend.setLongitude(cursor.getLong(++i));
-
-                log("Gets the phone number of Friend(" + friend.getId() + ")");
-                friend.setPhone(cursor.getString(++i));
-
-                log("Gets the email of Friend(" + friend.getId() + ")");
-                friend.setEmail(cursor.getString(++i));
-
-                log("Gets the website of Friend(" + friend.getId() + ")");
-                friend.setWebsite(cursor.getString(++i));
-
-                log("Gets the birthday of Friend(" + friend.getId() + ")");
-                friend.setBirthDate(new Date(cursor.getLong(++i)));
-
-                log("Attempts to convert friend(" + friend.getId() + ")'s byte array into a bitmap");
-                byte[] blob = cursor.getBlob(++i);
-                Bitmap bitmap = BitmapFactory
-                        .decodeByteArray(blob, 0, blob.length, new BitmapFactory.Options());
-                friend.setPicture(bitmap);
-
-                log("Add friend(" + friend.getId() + ") to the list of friends");
+                Friend friend = assembleFriend(cursor);
                 friends.add(friend);
             }
             while (cursor.moveToNext());
@@ -257,49 +246,49 @@ public class SQLiteFriends implements IStorage<Friend>
     }
 
     @Override
-    public boolean update(Friend item)
-    {
+    public boolean update(Friend item) {
         log("Attempts to update Friend " + item.getName());
-        try
-        {
-            log("Attempts to convert bitmap into byte array");
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            item.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bytes = stream.toByteArray();
-            log("Conversion successful");
+        Bitmap picture = item.getPicture();
+        byte[] bytes = null;
+        try {
+            if (picture != null) {
+                log("Attempts to convert bitmap into byte array");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                bytes = stream.toByteArray();
+                log("Conversion successful");
 
-            log("Attempts to close the stream");
-            stream.close();
-            log("Stream closed successfully");
-
-            ContentValues cv = new ContentValues();
-            cv.put(FIELD_NAME, item.getName());
-            cv.put(FIELD_NAME, item.getAddress());
-            cv.put(FIELD_NAME, item.getLatitude());
-            cv.put(FIELD_NAME, item.getLongitude());
-            cv.put(FIELD_NAME, item.getPhone());
-            cv.put(FIELD_NAME, item.getEmail());
-            cv.put(FIELD_NAME, item.getWebsite());
-            cv.put(FIELD_NAME, item.getBirthDate().getTime());
-            cv.put(FIELD_NAME, bytes);
-
-            log("Fires off the UPDATE statement");
-            int result = this.database
-                    .update(TABLE_NAME, cv, "id = ?", new String[] {"" + item.getId()});
-
-            return result >= 1;
-        }
-        catch (IOException e)
-        {
+                log("Attempts to close the stream");
+                stream.close();
+                log("Stream closed successfully");
+            }
+        } catch (IOException e) {
             log("Stream failed to close. IOException");
             log("Exception: " + e.getMessage());
             return false;
-        }
-        finally
-        {
+        } finally {
             log("Recycles the bitmap");
-            item.getPicture().recycle();
+            if (picture != null) {
+                picture.recycle();
+            }
         }
+
+        ContentValues cv = new ContentValues();
+        cv.put(FIELD_NAME, item.getName());
+        cv.put(FIELD_ADDRESS, item.getAddress());
+        cv.put(FIELD_LATITUDE, item.getLatitude());
+        cv.put(FIELD_LONGITUDE, item.getLongitude());
+        cv.put(FIELD_PHONE, item.getPhone());
+        cv.put(FIELD_EMAIL, item.getEmail());
+        cv.put(FIELD_WEBSITE, item.getWebsite());
+        cv.put(FIELD_BIRTHDAY, item.getBirthDate().getTime());
+        cv.put(FIELD_PICTURE, bytes);
+
+        log("Fires off the UPDATE statement");
+        int result = this.database
+                .update(TABLE_NAME, cv, "id = ?", new String[] {"" + item.getId()});
+
+        return result >= 1;
     }
 
     @Override
