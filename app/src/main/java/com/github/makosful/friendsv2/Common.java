@@ -7,7 +7,7 @@ public class Common
     public static final String INTENT_MAP_ACTIVITY = "MapActivity";
     public static final String DATA_FRIEND_DETAIL = "dataFriendDetail";
 
-    public static final int FEATURE_REQUEST_CODE_CAMERA         = 101;
+    public static final int ACTIVITY_REQUEST_CODE_CAMERA        = 101;
     public static final int ACTIVITY_REQUEST_CODE_FRIEND_EDIT   = 102;
     public static final int ACTIVITY_REQUEST_CODE_FRIEND_DETAIL = 103;
     public static final int PERMISSION_REQUEST_CODE_CAMERA      = 301;

@@ -78,7 +78,7 @@ public class FriendDetail extends AppCompatActivity {
             return;
 
         switch (requestCode) {
-            case Common.FEATURE_REQUEST_CODE_CAMERA:
+            case Common.ACTIVITY_REQUEST_CODE_CAMERA:
                 assert data != null;
                 handleCameraResult(data);
                 break;
@@ -193,7 +193,7 @@ public class FriendDetail extends AppCompatActivity {
             Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (i.resolveActivity(getPackageManager()) != null)
             {
-                startActivityForResult(i, Common.FEATURE_REQUEST_CODE_CAMERA);
+                startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_CAMERA);
             }
         }
         else
