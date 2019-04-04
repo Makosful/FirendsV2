@@ -1,5 +1,6 @@
 package com.github.makosful.friendsv2.gui.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -35,8 +36,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         Log.d(TAG, "Adapter has been created");
     }
 
-
-
     @NonNull
     @Override
     public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
@@ -66,15 +65,15 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDetailView(friend);
+                openDetailView(friend.getId());
             }
         });
     }
 
-    private void openDetailView(Friend friend) {
+    private void openDetailView(int id) {
         Intent i = new Intent(context, FriendDetail.class);
-        i.putExtra(Common.DATA_FRIEND_DETAIL, friend);
-        context.startActivity(i);
+        i.putExtra(Common.DATA_FRIEND_DETAIL, id);
+        ((Activity)context).startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL);
         // Toast.makeText(context, "Showing Friend: " + friend.getName(), Toast.LENGTH_SHORT).show();
     }
 

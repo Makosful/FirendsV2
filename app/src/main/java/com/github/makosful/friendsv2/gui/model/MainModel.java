@@ -30,7 +30,7 @@ public class MainModel
         friendStorage.update(friend);
     }
 
-    public void seed() {
-        friendStorage.seed();
+    public Friend getFriend(int id) {
+        return friendStorage.readById(id);
     }
 }

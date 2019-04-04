@@ -52,7 +52,8 @@ public class FriendDetail extends AppCompatActivity {
         this.model = new MainModel(this);
 
         log("Retrieving Friend from extras");
-        friend = (Friend) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
+        int id = (int) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
+        friend = model.getFriend(id);
 
         log("Setting default values from Friend");
         name = findViewById(R.id.tv_friend_list_name);
@@ -169,6 +170,8 @@ public class FriendDetail extends AppCompatActivity {
         Friend friend = (Friend) Objects.requireNonNull(data.getExtras()).get(Common.INTENT_FRIEND_EDIT_RESULT);
         assert friend != null;
         log("Results came back as OK");
+
+        model.save(friend);
 
         this.friend = friend;
         this.name.setText(friend.getName());
