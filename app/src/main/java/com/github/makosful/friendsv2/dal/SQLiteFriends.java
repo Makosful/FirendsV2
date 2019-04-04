@@ -327,10 +327,10 @@ public class SQLiteFriends implements IStorage<Friend>
         create(friend);
 
         friend = new Friend();
-        friend.setName("Tobi Danforth");
+        friend.setName("Tobi Danforth DK");
         friend.setAddress("14 Donald Trail");
-        friend.setLatitude(35.23194);
-        friend.setLongitude(40.32227);
+        friend.setLatitude(55.6761);
+        friend.setLongitude(12.5683);
         friend.setPhone("74494110");
         friend.setEmail("tdanforth0@dion.ne.jp");
         friend.setWebsite("http://opera.com/pellentesque/ultrices.html");
