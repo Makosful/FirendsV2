@@ -19,8 +19,6 @@ import android.widget.Toast;
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
-import com.github.makosful.friendsv2.dal.IStorage;
-import com.github.makosful.friendsv2.dal.SQLiteFriends;
 import com.github.makosful.friendsv2.gui.model.MainModel;
 
 import java.util.Objects;
@@ -89,6 +87,11 @@ public class FriendDetail extends AppCompatActivity {
             default:
                 Toast.makeText(this, "Unknown result code.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public void showFriendOnMap(View view) {
