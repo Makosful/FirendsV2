@@ -49,25 +49,23 @@ public class FriendDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
 
+        log("Getting an instance of the main model");
         this.model = new MainModel(this);
 
-        log("Retrieving Friend from extras");
-        friend = (Friend) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
+        log("Finds and sets all the reused views");
+        this.name = findViewById(R.id.tv_friend_list_name);
+        this.phone = findViewById(R.id.tv_friend_detail_phone);
+        this.email = findViewById(R.id.tv_friend_detail_email);
+        this.website = findViewById(R.id.tv_friend_detail_website);
+        this.image = findViewById(R.id.iv_friend_detail_image);
 
-        log("Setting default values from Friend");
-        name = findViewById(R.id.tv_friend_list_name);
-        name.setText(friend.getName());
+        log("Reading the Friend ID from the Extras");
+        int id = (int) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
+        log("Fetching the friend from the main model");
+        friend = model.getFriend(id);
 
-        phone = findViewById(R.id.tv_friend_detail_phone);
-        phone.setText(friend.getPhone());
-
-        email = findViewById(R.id.tv_friend_detail_email);
-        email.setText(friend.getEmail());
-
-        website = findViewById(R.id.tv_friend_detail_website);
-        website.setText(friend.getWebsite());
-
-        image = findViewById(R.id.iv_friend_detail_image);
+        // Populate all the fields
+        updateAllFields();
 
         log("Finished creating Friend Detail");
     }
@@ -101,6 +99,7 @@ public class FriendDetail extends AppCompatActivity {
         log("Starting Map activity");
         startActivity(i);
     }
+
 
     /**
      * Launches the default browser and loads the friend's website
@@ -144,11 +143,12 @@ public class FriendDetail extends AppCompatActivity {
         startActivity(sendIntent);
     }
 
+
     /**
      * Launches the Edit Friend activity
      * @param view Unused
      */
-    public void editFriend(View view) {
+    public void openFriendEditActivity(View view) {
         log("Preparing to edit Friend");
 
         Intent i = new Intent(this, FriendEdit.class);
@@ -170,18 +170,20 @@ public class FriendDetail extends AppCompatActivity {
         assert friend != null;
         log("Results came back as OK");
 
-        this.friend = friend;
-        this.name.setText(friend.getName());
-        this.phone.setText(friend.getPhone());
-        this.email.setText(friend.getEmail());
-        this.website.setText(friend.getWebsite());
+        if (model.save(friend)){
+            this.friend = friend;
+            updateAllFields();
+        } else {
+            Toast.makeText(this, "Failed to save the changes", Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     /**
      * Launches the default camera app
      * @param view Unused
      */
-    public void updatePicture(View view) {
+    public void openCameraActivity(View view) {
         if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
             requestPermissions( new String[]{Manifest.permission.CAMERA},
                     Common.PERMISSION_REQUEST_CODE_CAMERA );
@@ -216,5 +218,111 @@ public class FriendDetail extends AppCompatActivity {
         image.setImageBitmap(friend.getPicture());
         // model.save(friend);
         log("Updated the friend");
+    }
+
+
+    /**
+     * Updates all fields in the activity with the information from the current instance of Friend
+     */
+    private void updateAllFields() {
+        log("Updating all fields for this friend");
+
+        updateName();
+
+        updatePhone();
+
+        updateEmail();
+
+        updateWebsite();
+
+        updatePicture();
+
+        log("Finished updating all fields");
+    }
+
+    /**
+     * Update the name view based on the current instance of the Friend
+     */
+    private void updateName(){
+        log("Updating the name");
+        name.setText(friend.getName());
+        // No checks since name is mandatory
+    }
+
+    /**
+     * Update the Views related to the phone number based on the instance of Friend
+     */
+    private void updatePhone() {
+        log("Updating phone number");
+        String phone = friend.getPhone();
+        if (phone == null || phone.isEmpty()) {
+            log("No phone number was saved");
+
+            log("Disabling SMS button");
+            findViewById(R.id.ib_friend_detail_sms).setEnabled(false);
+            log("Disabling Call button");
+            findViewById(R.id.ib_friend_detail_call).setEnabled(false);
+        } else {
+            log("Setting phone number");
+            this.phone.setText(phone);
+
+            log("Enabling SMS button");
+            findViewById(R.id.ib_friend_detail_sms).setEnabled(true);
+            log("Enabling Call button");
+            findViewById(R.id.ib_friend_detail_call).setEnabled(true);
+        }
+    }
+
+    /**
+     * Updates the Views related to email, based on the instance of Friend
+     */
+    private void updateEmail() {
+        log("Updating email");
+        String email = friend.getEmail();
+        if (email == null || email.isEmpty()) {
+            log("No email was saved");
+            log("Disabling email button");
+            findViewById(R.id.ib_friend_detail_mail).setEnabled(false);
+        } else {
+            log("Setting email");
+            this.email.setText(email);
+
+            log("Enabling email button");
+            findViewById(R.id.ib_friend_detail_mail).setEnabled(true);
+        }
+    }
+
+    /**
+     * Updates the Views related to website , based on the instance of Friend
+     */
+    private void updateWebsite() {
+        log("Updating website");
+        String website = friend.getWebsite();
+        if (website == null || website.isEmpty()) {
+            log("No website was saved");
+
+            log("Disabling website button");
+            findViewById(R.id.ib_friend_detail_website).setEnabled(false);
+        } else {
+            log("Setting website");
+            this.website.setText(website);
+
+            log("Disabling website button");
+            findViewById(R.id.ib_friend_detail_website).setEnabled(true);
+        }
+    }
+
+    /**
+     * Updates the ImageView holding the Friend's picture, based on the current instance of Friend
+     */
+    private void updatePicture() {
+        log("Updating picture");
+        Bitmap picture = friend.getPicture();
+        if (picture == null) {
+            log("No image has been saved");
+        } else {
+            log("Setting image");
+            image.setImageBitmap(picture);
+        }
     }
 }

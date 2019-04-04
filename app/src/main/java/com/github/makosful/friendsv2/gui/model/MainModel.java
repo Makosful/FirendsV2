@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.dal.IStorage;
-import com.github.makosful.friendsv2.dal.SQLiteFriends;
+import com.github.makosful.friendsv2.dal.MemoryStorageFriends;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainModel
@@ -15,7 +14,8 @@ public class MainModel
 
     public MainModel(Context context)
     {
-        friendStorage = new SQLiteFriends(context);
+        // friendStorage = new SQLiteFriends(context);
+        friendStorage = MemoryStorageFriends.getInstance();
         // friendStorage.seed();
     }
 
@@ -24,11 +24,11 @@ public class MainModel
         return friendStorage.readAll();
     }
 
-    public void save(Friend friend) {
-        friendStorage.update(friend);
+    public boolean save(Friend friend) {
+        return friendStorage.update(friend);
     }
 
-    public void seed() {
-        friendStorage.seed();
+    public Friend getFriend(int id) {
+        return friendStorage.readById(id);
     }
 }
