@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.model.MainModel;
 import com.github.makosful.friendsv2.gui.model.FriendAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -39,9 +41,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        friendList = model.getFriendList();
-        adapter.notifyDataSetChanged();
+        switch (requestCode) {
+            case Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL:
+                updateList();
+                break;
+        }
     }
 
-
+    private void updateList() {
+        friendList.clear();
+        friendList.addAll(model.getFriendList());
+        adapter.notifyDataSetChanged();
+    }
 }
