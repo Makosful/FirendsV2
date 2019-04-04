@@ -22,14 +22,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.makosful.friendsv2.Common;
+import com.github.makosful.friendsv2.IMapCallBack;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.model.MyLocationListener;
 
 import java.util.Objects;
 
-public class FriendEdit extends AppCompatActivity
-{
+public class FriendEdit extends AppCompatActivity implements IMapCallBack {
 
     private static final String TAG = "FriendEdit";
 
@@ -44,7 +44,7 @@ public class FriendEdit extends AppCompatActivity
 
     public FriendEdit()
     {
-        locationListener = new MyLocationListener();
+        locationListener = new MyLocationListener(this);
     }
 
     private static void log(String message)
@@ -227,5 +227,12 @@ public class FriendEdit extends AppCompatActivity
         log("Canceling changes");
         setResult(Activity.RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public void setCurrentLocation(Location location) {
+        String lat = String.valueOf(location.getLatitude());
+        String lng = String.valueOf(location.getLongitude());
+        log("latitude: " + lat + " & longitude: " + lng);
     }
 }
