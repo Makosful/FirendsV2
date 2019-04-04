@@ -3,6 +3,7 @@ package com.github.makosful.friendsv2.gui.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,38 +31,55 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     public FriendAdapter(Context context, List<Friend> friendList)
     {
+        log("Creating adapter");
         this.context = context;
         this.friendList = friendList;
+    }
 
-        Log.d(TAG, "Adapter has been created");
+    private static void log(String message){
+        Log.d(TAG, message);
     }
 
     @NonNull
     @Override
     public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
     {
-        Log.d(TAG, "Creating ViewHolder");
+        log("Creating ViewHolder");
+
+        log("Inflating using custom layout");
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.adapter_layout_friends, viewGroup, false);
-        FriendViewHolder viewHolder = new FriendViewHolder(view);
-        Log.d(TAG, "ViewHolder created");
-        return viewHolder;
+
+        log("Created ViewHolder");
+        return new FriendViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder viewHolder, int position)
     {
-        Log.d(TAG, "Binding ViewHolder");
+        log("Binding ViewHolder in position: " + position);
 
+        log("Reading friend from position " + position);
         final Friend friend = friendList.get(position);
-        Log.d(TAG, "Retrieved friend: " + friend.getName());
 
-        // Log.d(TAG, "Setting friend image");
-        // viewHolder.image.setImageBitmap(friend.getPicture());
+        Bitmap picture = friend.getPicture();
+        if (picture == null) {
+            log("No picture has been saved for this friend");
+        } else {
+            log("Setting profile image for friend");
+            viewHolder.image.setImageBitmap(picture);
+        }
 
-        Log.d(TAG, "Setting friend name");
-        viewHolder.name.setText(friend.getName());
+        String name = friend.getName();
+        if (name == null || name.isEmpty()) {
+            log("Friend in position (" + position + ") appears to have no name");
+            viewHolder.name.setText("");
+        } else {
+            log("Setting name");
+            viewHolder.name.setText(name);
+        }
 
+        log("Setting the onClickListener for this item to open the friend detail view");
         viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +111,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         {
             super(itemView);
 
-            // image = itemView.findViewById(R.id.iv_friend_list_image);
+            image = itemView.findViewById(R.id.iv_friend_list_image);
             name = itemView.findViewById(R.id.tv_friend_list_name);
 
             parent = itemView.findViewById(R.id.parent_layout);
