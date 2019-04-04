@@ -2,7 +2,6 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
