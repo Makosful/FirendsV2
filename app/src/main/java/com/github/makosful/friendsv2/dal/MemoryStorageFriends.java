@@ -71,8 +71,10 @@ public class MemoryStorageFriends implements IStorage<Friend> {
     public void seed()
     {
         deleteAll();
+        int i = 0;
 
         Friend friend = new Friend();
+        friend.setId(++i);
         friend.setName("Bob Ross");
         friend.setPhone("51239875");
         friend.setEmail("bob@ross.paint");
@@ -80,6 +82,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Tobi Danforth");
         friend.setAddress("14 Donald Trail");
         friend.setLatitude(35.23194);
@@ -90,6 +93,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Kelly Reijmers");
         friend.setAddress("838 4th Hill");
         friend.setLatitude(-0.5833333);
@@ -100,6 +104,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Ruby Hakes");
         friend.setAddress("44027 Chive Hill");
         friend.setLatitude(13.3670968);
@@ -110,6 +115,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Marika Sasser");
         friend.setAddress("76 Walton Pass");
         friend.setLatitude(38.8466225);
@@ -120,6 +126,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Cybil Peealess");
         friend.setAddress("0 Sunbrook Place");
         friend.setLatitude(40.0912332);
@@ -130,6 +137,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Carlye McSherry");
         friend.setAddress("516 Debra Place");
         friend.setLatitude(36.962751);
@@ -140,6 +148,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Lib McKeating");
         friend.setAddress("5 Mockingbird Point");
         friend.setLatitude(9.939624);
@@ -150,6 +159,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Billy Berrisford");
         friend.setAddress("9 Fallview Plaza");
         friend.setLatitude(59.330173);
@@ -160,6 +170,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Adrian Artrick");
         friend.setAddress("9279 Main Trail");
         friend.setLatitude(9.338241);
@@ -170,6 +181,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
         create(friend);
 
         friend = new Friend();
+        friend.setId(++i);
         friend.setName("Elinore Braidwood");
         friend.setAddress("19 Cody Lane");
         friend.setLatitude(-38.9898711);
