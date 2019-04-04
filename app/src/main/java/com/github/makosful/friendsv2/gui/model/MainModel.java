@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.dal.IStorage;
+import com.github.makosful.friendsv2.dal.MemoryStorageFriends;
 import com.github.makosful.friendsv2.dal.SQLiteFriends;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ public class MainModel
 
     public MainModel(Context context)
     {
-        friendStorage = new SQLiteFriends(context);
+        // friendStorage = new SQLiteFriends(context);
+        friendStorage = MemoryStorageFriends.getInstance();
         // friendStorage.seed();
     }
 
