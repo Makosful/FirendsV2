@@ -40,6 +40,7 @@ public class FriendDetail extends AppCompatActivity {
     private Uri path;
 
     private ImageView image;
+    private TextView tv_uri;
     private TextView name;
     private TextView phone;
     private TextView email;
@@ -65,6 +66,7 @@ public class FriendDetail extends AppCompatActivity {
         this.email = findViewById(R.id.tv_friend_detail_email);
         this.website = findViewById(R.id.tv_friend_detail_website);
         this.image = findViewById(R.id.iv_friend_detail_image);
+        this.tv_uri = findViewById(R.id.tv_friend_detail_uri);
 
         log("Reading the Friend ID from the Extras");
         int id = (int) Objects.requireNonNull(getIntent().getExtras()).get(Common.DATA_FRIEND_DETAIL);
@@ -227,9 +229,14 @@ public class FriendDetail extends AppCompatActivity {
      * @param data The Intent returned from the camera app.
      */
     private void handleCameraResult(Intent data) {
-        friend.setImageUrl(this.path);
-        updatePicture();
         log("Handling image from camera");
+        friend.setImageUrl(this.path);
+        if (model.saveFriend(friend)) {
+            log("Friend saved");
+            updatePicture();
+        } else {
+            log("Could not save image");
+        }
     }
 
 
@@ -329,7 +336,11 @@ public class FriendDetail extends AppCompatActivity {
      */
     private void updatePicture() {
         log("Updating picture");
-        this.image.setImageURI(friend.getImageUrl());
+        Uri uri = friend.getImageUrl();
+        if (uri == null) return;
+
+        this.tv_uri.setText(uri.toString());
+        this.image.setImageURI(uri);
     }
 
 

@@ -21,7 +21,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
     private MemoryStorageFriends()
     {
         friends = new ArrayList<>();
-        seed();
+        // seed();
     }
 
     @Override
