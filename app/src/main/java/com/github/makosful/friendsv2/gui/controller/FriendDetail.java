@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +18,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.makosful.friendsv2.BuildConfig;
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.model.MainModel;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class FriendDetail extends AppCompatActivity {
@@ -29,6 +37,7 @@ public class FriendDetail extends AppCompatActivity {
     private MainModel model;
 
     private Friend friend;
+    private Uri path;
 
     private ImageView image;
     private TextView name;
@@ -173,11 +182,11 @@ public class FriendDetail extends AppCompatActivity {
         assert friend != null;
         log("Results came back as OK");
 
-        if (model.save(friend)){
+        if (model.saveFriend(friend)){
             this.friend = friend;
             updateAllFields();
         } else {
-            Toast.makeText(this, "Failed to save the changes", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to saveFriend the changes", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -191,17 +200,25 @@ public class FriendDetail extends AppCompatActivity {
             requestPermissions( new String[]{Manifest.permission.CAMERA},
                     Common.PERMISSION_REQUEST_CODE_CAMERA );
 
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-        {
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            if (i.resolveActivity(getPackageManager()) != null)
-            {
-                startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_CAMERA);
-            }
-        }
-        else
-        {
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             log("Permissions have been denied.");
+            return;
+        }
+
+        try {
+            path = FileProvider.getUriForFile(
+                    FriendDetail.this,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    getNewFilePath());
+            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            i.putExtra(MediaStore.EXTRA_OUTPUT, path);
+            if (i.resolveActivity(getPackageManager()) == null) return;
+
+            startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_CAMERA);
+
+        } catch (IOException e) {
+            log(e.getMessage());
         }
     }
 
@@ -210,17 +227,9 @@ public class FriendDetail extends AppCompatActivity {
      * @param data The Intent returned from the camera app.
      */
     private void handleCameraResult(Intent data) {
+        friend.setImageUrl(this.path);
+        updatePicture();
         log("Handling image from camera");
-
-        Bitmap bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
-        log("Retrieved the image");
-
-        friend.setPicture(bitmap);
-        log("Assigned the image");
-
-        image.setImageBitmap(friend.getPicture());
-        // model.save(friend);
-        log("Updated the friend");
     }
 
 
@@ -320,12 +329,36 @@ public class FriendDetail extends AppCompatActivity {
      */
     private void updatePicture() {
         log("Updating picture");
-        Bitmap picture = friend.getPicture();
-        if (picture == null) {
-            log("No image has been saved");
+        this.image.setImageURI(friend.getImageUrl());
+    }
+
+
+    private File getNewFilePath() throws IOException {
+        log("Gets the file path");
+
+        File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), Common.APPLICATION_NAME);
+        log("Picture directory: " + dir.getPath());
+
+        log("Checking if image directory exists");
+        if (!dir.exists()) {
+            log("Image directory doesn't exist. Attempts to create directory");
+            if (!dir.mkdir()) {
+                log("Failed to create directory");
+                throw new IOException("Failed to create output directory");
+            } else {
+                log("Directory (" + dir + ") created.");
+            }
         } else {
-            log("Setting image");
-            image.setImageBitmap(picture);
+            log("Picture directory exists");
         }
+
+        log("Creating filename from timestamp");
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
+        String postfix = "jpg";
+        String prefix = "IMG";
+        String filename = prefix + "_" + timeStamp + "." + postfix;
+        log("Filename generated: " + filename);
+
+        return new File(dir.getPath() + File.separator + filename);
     }
 }

@@ -1,6 +1,7 @@
 package com.github.makosful.friendsv2.be;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +17,7 @@ public class Friend implements Serializable
     private String email;
     private String website;
     private Date birthDate;
-    private Bitmap picture;
+    private Uri imageUrl;
 
     public int getId()
     {
@@ -108,13 +109,11 @@ public class Friend implements Serializable
         this.birthDate = birthDate;
     }
 
-    public Bitmap getPicture()
-    {
-        return picture;
+    public Uri getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPicture(Bitmap picture)
-    {
-        this.picture = picture;
+    public void setImageUrl(Uri imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

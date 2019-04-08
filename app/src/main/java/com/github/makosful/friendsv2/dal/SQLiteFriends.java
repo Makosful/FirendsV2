@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 
 import com.github.makosful.friendsv2.Common;
@@ -69,81 +70,49 @@ public class SQLiteFriends implements IStorage<Friend>
     {
         log("Attempting to store Friend in database");
 
-        try
-        {
-            byte[] bytes = new byte[0];
+        int i = 0;
 
-            if (friend.getPicture() != null)
-            {
-                log("Converts bitmap to byte array");
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                friend.getPicture().compress(Bitmap.CompressFormat.PNG, 100, stream);
-                bytes = stream.toByteArray();
-                log("Conversion successfully");
+        this.insertStatement.bindString(++i, friend.getName()); // 1
 
-                log("Attempts to close conversion stream");
-                stream.close();
-                log("stream closed");
-            }
+        String address = friend.getAddress();
+        if (address == null)
+            this.insertStatement.bindNull(++i); // 2
+        else
+            this.insertStatement.bindString(++i, address); // 2
 
-            int i = 0;
+        this.insertStatement.bindDouble(++i, friend.getLatitude()); // 3
+        this.insertStatement.bindDouble(++i, friend.getLongitude()); // 4
 
-            this.insertStatement.bindString(++i, friend.getName()); // 1
+        String phone = friend.getPhone();
+        if (phone == null)
+            this.insertStatement.bindNull(++i); // 5
+        else
+            this.insertStatement.bindString(++i, phone); // 5
 
-            String address = friend.getAddress();
-            if (address == null)
-                this.insertStatement.bindNull(++i); // 2
-            else
-                this.insertStatement.bindString(++i, address); // 2
+        String email = friend.getEmail();
+        if (email == null)
+            this.insertStatement.bindNull(++i); // 6
+        else
+            this.insertStatement.bindString(++i, email); // 6
 
-            this.insertStatement.bindDouble(++i, friend.getLatitude()); // 3
-            this.insertStatement.bindDouble(++i, friend.getLongitude()); // 4
+        String website = friend.getWebsite();
+        if (website == null)
+            this.insertStatement.bindNull(++i); // 7
+        else
+            this.insertStatement.bindString(++i, website); // 7
 
-            String phone = friend.getPhone();
-            if (phone == null)
-                this.insertStatement.bindNull(++i); // 5
-            else
-                this.insertStatement.bindString(++i, phone); // 5
+        Date birthDate = friend.getBirthDate();
+        if (birthDate == null)
+            this.insertStatement.bindNull(++i); // 8
+        else
+            this.insertStatement.bindLong(++i, birthDate.getTime()); // 8
 
-            String email = friend.getEmail();
-            if (email == null)
-                this.insertStatement.bindNull(++i); // 6
-            else
-                this.insertStatement.bindString(++i, email); // 6
+        this.insertStatement.bindString(++i, friend.getImageUrl().toString());
 
-            String website = friend.getWebsite();
-            if (website == null)
-                this.insertStatement.bindNull(++i); // 7
-            else
-                this.insertStatement.bindString(++i, website); // 7
+        log("Attempts to execute INSERT statement for Friend");
+        long result = this.insertStatement.executeInsert();
 
-            Date birthDate = friend.getBirthDate();
-            if (birthDate == null)
-                this.insertStatement.bindNull(++i); // 8
-            else
-                this.insertStatement.bindLong(++i, birthDate.getTime()); // 8
-
-            this.insertStatement.bindBlob(++i, bytes); // 9
-
-            log("Attempts to execute INSERT statement for Friend");
-            long result = this.insertStatement.executeInsert();
-
-            return result >= 0;
-        }
-        catch (IOException e)
-        {
-            log("Stream failed to close. IOException");
-            log("Exception: " + e.getMessage());
-            return false;
-        }
-        finally
-        {
-            log("Recycles the bitmap");
-            if (friend.getPicture() != null)
-            {
-                friend.getPicture().recycle();
-            }
-        }
+        return result >= 0;
     }
 
     @Override
@@ -200,13 +169,7 @@ public class SQLiteFriends implements IStorage<Friend>
         friend.setBirthDate(new Date(cursor.getLong(++i)));
 
         log("Reading the name of Friend with ID: " + id);
-        byte[] blob = cursor.getBlob(++i);
-        if (blob == null) {
-            friend.setPicture(null);
-        } else {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(blob, 0, blob.length, new BitmapFactory.Options());
-            friend.setPicture(bitmap);
-        }
+        friend.setImageUrl(Uri.parse(cursor.getString(++i)));
 
         return friend;
     }
@@ -248,30 +211,6 @@ public class SQLiteFriends implements IStorage<Friend>
     @Override
     public boolean update(Friend item) {
         log("Attempts to update Friend " + item.getName());
-        Bitmap picture = item.getPicture();
-        byte[] bytes = null;
-        try {
-            if (picture != null) {
-                log("Attempts to convert bitmap into byte array");
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                picture.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                bytes = stream.toByteArray();
-                log("Conversion successful");
-
-                log("Attempts to close the stream");
-                stream.close();
-                log("Stream closed successfully");
-            }
-        } catch (IOException e) {
-            log("Stream failed to close. IOException");
-            log("Exception: " + e.getMessage());
-            return false;
-        } finally {
-            log("Recycles the bitmap");
-            if (picture != null) {
-                picture.recycle();
-            }
-        }
 
         ContentValues cv = new ContentValues();
         cv.put(FIELD_NAME, item.getName());
@@ -282,7 +221,7 @@ public class SQLiteFriends implements IStorage<Friend>
         cv.put(FIELD_EMAIL, item.getEmail());
         cv.put(FIELD_WEBSITE, item.getWebsite());
         cv.put(FIELD_BIRTHDAY, item.getBirthDate().getTime());
-        cv.put(FIELD_PICTURE, bytes);
+        cv.put(FIELD_PICTURE, item.getImageUrl().toString());
 
         log("Fires off the UPDATE statement");
         int result = this.database
@@ -439,7 +378,7 @@ public class SQLiteFriends implements IStorage<Friend>
                                FIELD_EMAIL + " TEXT, " +
                                FIELD_WEBSITE + " TEXT, " +
                                FIELD_BIRTHDAY + " INTEGER, " +
-                               FIELD_PICTURE + " BLOB" +
+                               FIELD_PICTURE + " TEXT " +
                                ")");
     }
 

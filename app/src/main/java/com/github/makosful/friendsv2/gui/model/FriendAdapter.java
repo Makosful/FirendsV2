@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,13 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.controller.FriendDetail;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder>
@@ -62,12 +63,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         log("Reading friend from position " + position);
         final Friend friend = friendList.get(position);
 
-        Bitmap picture = friend.getPicture();
-        if (picture == null) {
-            log("No picture has been saved for this friend");
-        } else {
-            log("Setting profile image for friend");
-            viewHolder.image.setImageBitmap(picture);
+        try {
+            if (friend.getImageUrl() != null) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), friend.getImageUrl());
+                viewHolder.image.setImageBitmap(bitmap);
+            }
+        } catch (IOException e) {
+            log(e.getMessage());
         }
 
         String name = friend.getName();
