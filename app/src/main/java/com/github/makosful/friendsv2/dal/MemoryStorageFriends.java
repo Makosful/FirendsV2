@@ -41,7 +41,7 @@ public class MemoryStorageFriends implements IStorage<Friend> {
 
     @Override
     public List<Friend> readAll() {
-        return friends;
+        return new ArrayList<>(this.friends);
     }
 
     @Override
