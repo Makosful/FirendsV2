@@ -10,9 +10,6 @@
 
     <string name="friend_detail_image">profile image</string>
 
-    <string name="friend_edit_full_name">Full Name</string>
-    <string name="friend_edit_phone">Phone Number</string>
-    <string name="friend_edit_email">Email</string>
 
     <string name="friend_picture">Take Picture</string>
 
