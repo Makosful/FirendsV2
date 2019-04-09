@@ -35,4 +35,8 @@ public class MainModel
     public Friend getFriend(int id) {
         return friendStorage.readById(id);
     }
+
+    public boolean createFriend(Friend friend) {
+        return friendStorage.create(friend);
+    }
 }
