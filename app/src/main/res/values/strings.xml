@@ -10,6 +10,12 @@
 
     <string name="friend_detail_image">profile image</string>
 
+    <string name="friend_meta_name">Name</string>
+    <string name="friend_meta_phone">Phone</string>
+    <string name="friend_mete_email">Email</string>
+    <string name="friend_meta_website">Website</string>
+    <string name="friend_meta_address">Address</string>
+    <string name="friend_meta_birthday">Birthday</string>
 
     <string name="friend_picture">Take Picture</string>
 
