@@ -2,8 +2,6 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -14,15 +12,14 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class FriendMeta extends Fragment {
-
     private TextView txt_name;
     private TextView txt_phone;
     private TextView txt_email;
@@ -33,7 +30,8 @@ public class FriendMeta extends Fragment {
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private OnFragmentInteractionListener mListener;
 
-    Date date;
+    private Date date;
+    private Friend friend;
 
     /**
      * Required public constructor.
@@ -42,14 +40,26 @@ public class FriendMeta extends Fragment {
     public FriendMeta() { }
 
     public static FriendMeta newInstance() {
-          return new FriendMeta();
+        FriendMeta friendMeta = new FriendMeta();
+        return friendMeta;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            this.friend = (Friend)getArguments().get(Common.ARGUMENT_FRIEND);
+        }
     }
 
+    private void m() {
+        if (this.friend != null && this.friend.getName() != null) txt_name.setText(this.friend.getName());
+        if (this.friend != null && this.friend.getPhone() != null) txt_phone.setText(this.friend.getPhone());
+        if (this.friend != null && this.friend.getEmail() != null) txt_email.setText(this.friend.getEmail());
+        if (this.friend != null && this.friend.getBirthDate() != null) tv_bday.setText(this.friend.getBirthDate().toString());
+        if (this.friend != null && this.friend.getAddress() != null) txt_address.setText(this.friend.getAddress());
+        if (this.friend != null && this.friend.getWebsite() != null) txt_website.setText(this.friend.getWebsite());
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_meta, container, false);
@@ -82,6 +92,7 @@ public class FriendMeta extends Fragment {
 
         txt_website = view.findViewById(R.id.txt_friend_meta_website);
         txt_website.addTextChangedListener(new MyTextWatcher());
+        m();
 
         return view;
     }
@@ -162,6 +173,11 @@ public class FriendMeta extends Fragment {
         c.set(year, month, dayOfMonth, 0, 0, 0);
         date = c.getTime();
         tv_bday.setText(year + "/" + (month +1) + "/" + dayOfMonth);
+    }
+
+    public void setFriend(Friend friend) {
+        this.friend = friend;
+        m();
     }
 
     public interface OnFragmentInteractionListener {

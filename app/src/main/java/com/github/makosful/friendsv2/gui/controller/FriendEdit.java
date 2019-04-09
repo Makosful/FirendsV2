@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -56,9 +57,10 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_edit);
 
-        log("Retrieving Friend from extras");
-        friend = (Friend) Objects.requireNonNull(getIntent().getExtras())
-                                 .get(Common.INTENT_FRIEND_EDIT);
+        this.friend = (Friend) Objects.requireNonNull(getIntent().getExtras()).get(Common.INTENT_FRIEND_EDIT);
+        FriendMeta frag = (FriendMeta) getSupportFragmentManager().findFragmentById(R.id.frag_friend_edit);
+        assert frag != null;
+        frag.setFriend(friend);
 
         log("Gets LocationManager");
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
