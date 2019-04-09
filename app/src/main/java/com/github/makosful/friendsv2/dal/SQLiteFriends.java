@@ -107,11 +107,11 @@ public class SQLiteFriends implements IStorage<Friend>
         else
             this.insertStatement.bindLong(++i, birthDate.getTime()); // 8
 
-        Uri imageUrl = friend.getImageUrl();
+        String imageUrl = friend.getImageUrl();
         if (imageUrl == null)
             this.insertStatement.bindNull(++i);
         else
-            this.insertStatement.bindString(++i, imageUrl.toString());
+            this.insertStatement.bindString(++i, imageUrl);
 
         log("Attempts to execute INSERT statement for Friend");
         long result = this.insertStatement.executeInsert();
@@ -174,8 +174,9 @@ public class SQLiteFriends implements IStorage<Friend>
 
         log("Reading the name of Friend with ID: " + id);
         String uri = cursor.getString(++i);
-        if (uri != null)
-            friend.setImageUrl(Uri.parse(uri));
+        if (uri != null) {
+            friend.setImageUrl(uri);
+        }
 
         return friend;
     }

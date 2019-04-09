@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -65,7 +66,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
         try {
             if (friend.getImageUrl() != null) {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), friend.getImageUrl());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(friend.getImageUrl()));
                 viewHolder.image.setImageBitmap(bitmap);
             }
         } catch (IOException e) {

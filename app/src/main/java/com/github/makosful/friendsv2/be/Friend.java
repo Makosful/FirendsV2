@@ -17,7 +17,7 @@ public class Friend implements Serializable
     private String email;
     private String website;
     private Date birthDate;
-    private Uri imageUrl;
+    private String imageUrl;
 
     public int getId()
     {
@@ -109,11 +109,11 @@ public class Friend implements Serializable
         this.birthDate = birthDate;
     }
 
-    public Uri getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(Uri imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }

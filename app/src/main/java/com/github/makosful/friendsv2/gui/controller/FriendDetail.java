@@ -230,7 +230,9 @@ public class FriendDetail extends AppCompatActivity {
      */
     private void handleCameraResult(Intent data) {
         log("Handling image from camera");
-        friend.setImageUrl(this.path);
+        if (this.path == null) return;
+
+        friend.setImageUrl(this.path.toString());
         if (model.saveFriend(friend)) {
             log("Friend saved");
             updatePicture();
@@ -336,11 +338,11 @@ public class FriendDetail extends AppCompatActivity {
      */
     private void updatePicture() {
         log("Updating picture");
-        Uri uri = friend.getImageUrl();
+        String uri = friend.getImageUrl();
         if (uri == null) return;
 
-        this.tv_uri.setText(uri.toString());
-        this.image.setImageURI(uri);
+        this.tv_uri.setText(uri);
+        this.image.setImageURI(Uri.parse(uri));
     }
 
 
