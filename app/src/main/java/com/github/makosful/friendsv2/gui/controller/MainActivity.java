@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
-            case Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL:
+            case Common.ACTIVITY_REQUEST_CODE_FRIEND_ADD:    // Update List
+            case Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL: // Update List
                 updateList();
                 break;
         }
@@ -52,5 +53,10 @@ public class MainActivity extends AppCompatActivity
         friendList.clear();
         friendList.addAll(model.getFriendList());
         adapter.notifyDataSetChanged();
+    }
+
+    public void addFriend(View view) {
+        Intent i = new Intent(this, FriendAdd.class);
+        this.startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_ADD);
     }
 }
