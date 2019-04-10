@@ -1,80 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:id="@+id/parent_layout">
 
     <ImageView
         android:id="@+id/iv_friend_list_image"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/friend_detail_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_width="@dimen/friend_list_height"
+        android:layout_height="@dimen/friend_list_height"
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="@string/friend_detail_image" />
 
     <TextView
         android:id="@+id/tv_friend_list_name"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="158dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="@dimen/friend_list_height"
+        android:layout_width="match_parent"
         android:gravity="center|start"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_friend_list_sms"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="Bob Ross" />
 
-    <ImageButton
-        android:id="@+id/btn_friend_list_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/friend_detail"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_friend_list_image"
-        app:layout_constraintEnd_toStartOf="@+id/btn_friend_list_call"
-        app:srcCompat="@drawable/baseline_contacts_24" />
-
-    <ImageButton
-        android:id="@+id/btn_friend_list_sms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/friend_text"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_friend_list_image"
-        app:layout_constraintEnd_toStartOf="@+id/btn_friend_list_mail"
-        app:srcCompat="@drawable/baseline_message_24" />
-
-    <ImageButton
-        android:id="@+id/btn_friend_list_call"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/friend_call"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_friend_list_image"
-        app:layout_constraintEnd_toStartOf="@+id/btn_friend_list_sms"
-        app:srcCompat="@drawable/baseline_phone_24" />
-
-    <ImageButton
-        android:id="@+id/btn_friend_list_mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/friend_mail"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_friend_list_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/baseline_email_24" />
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -1,21 +1,29 @@
 package com.github.makosful.friendsv2.be;
 
-import android.graphics.Bitmap;
-import android.location.Location;
-
 import java.io.Serializable;
+import java.util.Date;
 
 public class Friend implements Serializable
 {
-    private Bitmap image;
+    private int id;
     private String name;
+    private String address;
+    private double latitude;
+    private double longitude;
+    private String phone;
     private String email;
-    private String number;
-    private Location home;
+    private String website;
+    private Date birthDate;
+    private String imageUrl;
 
-    public Friend(String name)
+    public int getId()
     {
-        this.name = name;
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public String getName()
@@ -28,6 +36,46 @@ public class Friend implements Serializable
         this.name = name;
     }
 
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public double getLatitude()
+    {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude)
+    {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude()
+    {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude)
+    {
+        this.longitude= longitude;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
+    }
+
     public String getEmail()
     {
         return email;
@@ -38,33 +86,31 @@ public class Friend implements Serializable
         this.email = email;
     }
 
-    public String getNumber()
+    public String getWebsite()
     {
-        return number;
+        return website;
     }
 
-    public void setNumber(String number)
+    public void setWebsite(String website)
     {
-        this.number = number;
+        this.website = website;
     }
 
-    public Bitmap getImage()
+    public Date getBirthDate()
     {
-        return image;
+        return birthDate;
     }
 
-    public void setImage(Bitmap image)
+    public void setBirthDate(Date birthDate)
     {
-        this.image = image;
+        this.birthDate = birthDate;
     }
 
-    public Location getHome()
-    {
-        return home;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setHome(Location home)
-    {
-        this.home = home;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

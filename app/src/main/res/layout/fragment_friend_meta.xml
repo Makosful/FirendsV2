@@ -1,0 +1,178 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.github.makosful.friendsv2.gui.controller.FriendMeta"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_friend_meta_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_meta_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/txt_friend_meta_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:nextFocusRight="@id/txt_friend_meta_phone"
+            android:nextFocusDown="@id/txt_friend_meta_phone"
+            android:nextFocusForward="@id/txt_friend_meta_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_friend_meta_name"
+            tools:text="Full Name" />
+
+        <TextView
+            android:id="@+id/tv_friend_meta_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_meta_phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_friend_meta_name" />
+
+        <EditText
+            android:id="@+id/txt_friend_meta_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:inputType="phone"
+            android:nextFocusLeft="@id/txt_friend_meta_name"
+            android:nextFocusRight="@id/txt_friend_meta_email"
+            android:nextFocusUp="@id/txt_friend_meta_name"
+            android:nextFocusDown="@id/txt_friend_meta_email"
+            android:nextFocusForward="@id/txt_friend_meta_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_friend_meta_phone"
+            tools:text="51239875" />
+
+        <TextView
+            android:id="@+id/tv_friend_meta_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_mete_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_friend_meta_phone" />
+
+        <EditText
+            android:id="@+id/txt_friend_meta_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
+            android:nextFocusLeft="@id/txt_friend_meta_phone"
+            android:nextFocusRight="@id/txt_friend_meta_birthday"
+            android:nextFocusUp="@id/txt_friend_meta_phone"
+            android:nextFocusDown="@id/txt_friend_meta_birthday"
+            android:nextFocusForward="@id/txt_friend_meta_birthday"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_friend_meta_email"
+            tools:text="mail@example.com" />
+
+        <TextView
+            android:id="@+id/tv_friend_meta_bday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_meta_birthday"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_friend_meta_email" />
+
+        <TextView
+            android:id="@+id/tv_friend_meta_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_meta_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_friend_meta_birthday" />
+
+        <EditText
+            android:id="@+id/txt_friend_meta_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:nextFocusLeft="@id/txt_friend_meta_birthday"
+            android:nextFocusRight="@id/txt_friend_meta_website"
+            android:nextFocusUp="@id/txt_friend_meta_birthday"
+            android:nextFocusDown="@id/txt_friend_meta_website"
+            android:nextFocusForward="@id/txt_friend_meta_website"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_friend_meta_address" />
+
+        <TextView
+            android:id="@+id/tv_friend_meta_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/friend_meta_website"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_friend_meta_address" />
+
+        <EditText
+            android:id="@+id/txt_friend_meta_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textUri"
+            android:nextFocusLeft="@id/txt_friend_meta_address"
+            android:nextFocusUp="@id/txt_friend_meta_address"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_friend_meta_website" />
+    </LinearLayout>
+</ScrollView>

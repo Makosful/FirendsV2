@@ -1,16 +1,19 @@
 package com.github.makosful.friendsv2.gui.model;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.makosful.friendsv2.Common;
@@ -18,127 +21,84 @@ import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.controller.FriendDetail;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder>
 {
     private static final String TAG = "Friend Adapter";
 
-    private List<Friend> friendList;
     private Context context;
+    private List<Friend> friendList;
 
-    public FriendAdapter(List<Friend> friendList, Context context)
+    public FriendAdapter(Context context, List<Friend> friendList)
     {
-        this.friendList = friendList;
+        log("Creating adapter");
         this.context = context;
+        this.friendList = friendList;
+    }
 
-        Log.d(TAG, "Adapter has been created");
+    private static void log(String message){
+        Log.d(TAG, message);
     }
 
     @NonNull
     @Override
     public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
     {
-        Log.d(TAG, "Creating ViewHolder");
+        log("Creating ViewHolder");
+
+        log("Inflating using custom layout");
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.adapter_layout_friends, null);
-        FriendViewHolder viewHolder = new FriendViewHolder(view);
-        Log.d(TAG, "ViewHolder created");
-        return viewHolder;
+        View view = inflater.inflate(R.layout.adapter_layout_friends, viewGroup, false);
+
+        log("Created ViewHolder");
+        return new FriendViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder viewHolder, int position)
     {
-        Log.d(TAG, "Binding ViewHolder");
+        log("Binding ViewHolder in position: " + position);
 
+        log("Reading friend from position " + position);
         final Friend friend = friendList.get(position);
-        Log.d(TAG, "Retrieved friend: " + friend.getName());
 
-        Log.d(TAG, "Setting friend image");
-        viewHolder.image.setImageBitmap(friend.getImage());
-
-        Log.d(TAG, "Setting friend name");
-        viewHolder.name.setText(friend.getName());
-
-        Log.d(TAG, "Creating onclickListener for detail view");
-        viewHolder.details.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openDetailsWindow(friend);
+        try {
+            if (friend.getImageUrl() != null) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(friend.getImageUrl()));
+                viewHolder.image.setImageBitmap(bitmap);
             }
-        });
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
 
-        Log.d(TAG, "Setting onClickListener for SMS service");
-        viewHolder.text.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openTextService(friend);
-            }
-        });
+        String name = friend.getName();
+        if (name == null || name.isEmpty()) {
+            log("Friend in position (" + position + ") appears to have no name");
+            viewHolder.name.setText("");
+        } else {
+            log("Setting name");
+            viewHolder.name.setText(name);
+        }
 
-        Log.d(TAG, "Setting onClickListener for phone service");
-        viewHolder.call.setOnClickListener(new View.OnClickListener()
-        {
+        log("Setting the onClickListener for this item to open the friend detail view");
+        viewHolder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                openPhoneService(friend);
-            }
-        });
-
-        Log.d(TAG, "Setting onClickListener for mail service");
-        viewHolder.mail.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                openMailService(friend);
+            public void onClick(View v) {
+                openDetailView(friend.getId());
             }
         });
     }
 
-    private void openDetailsWindow(Friend friend)
-    {
-        Log.d(TAG, "Opening detailed friend view");
-        Intent intent = new Intent(context, FriendDetail.class);
-
-        Log.d(TAG, "Adding friend to intent extra");
-        intent.putExtra(Common.INTENT_FRIEND_DETAIL, friend);
-
-        Log.d(TAG, "Starting new intent");
-        context.startActivity(intent);
-    }
-
-    private void openTextService(Friend friend)
-    {
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.setData(Uri.parse("sms:" + friend.getNumber()));
-        sendIntent.putExtra("sms_body", "Hi, it goes well on the android course...");
-        context.startActivity(sendIntent);
-    }
-
-    private void openPhoneService(Friend friend)
-    {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + friend.getNumber()));
-        context.startActivity(intent);
-    }
-
-    private void openMailService(Friend friend)
-    {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("plain/text");
-        String[] receivers = { friend.getEmail() };
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, receivers);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Test");
-        emailIntent.putExtra(Intent.EXTRA_TEXT,
-                             "Hej, Hope that it is ok, Best Regards android...;-)");
-        context.startActivity(emailIntent);
+    /**
+     * Opens a new FriendDetail Activity. The contained Friend is determined by the Friend ID passed in
+     * @param id The Friend ID
+     */
+    private void openDetailView(int id) {
+        Intent i = new Intent(context, FriendDetail.class);
+        i.putExtra(Common.DATA_FRIEND_DETAIL, id);
+        ((Activity)context).startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_DETAIL);
     }
 
     @Override
@@ -147,25 +107,21 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         return friendList.size();
     }
 
+
     class FriendViewHolder extends RecyclerView.ViewHolder
     {
         private ImageView image;
         private TextView name;
-        private ImageButton details;
-        private ImageButton text;
-        private ImageButton call;
-        private ImageButton mail;
+        private LinearLayout parent;
 
-        public FriendViewHolder(@NonNull View itemView)
+        FriendViewHolder(@NonNull View itemView)
         {
             super(itemView);
 
             image = itemView.findViewById(R.id.iv_friend_list_image);
             name = itemView.findViewById(R.id.tv_friend_list_name);
-            details = itemView.findViewById(R.id.btn_friend_list_details);
-            text = itemView.findViewById(R.id.btn_friend_list_sms);
-            call = itemView.findViewById(R.id.btn_friend_list_call);
-            mail = itemView.findViewById(R.id.btn_friend_list_mail);
+
+            parent = itemView.findViewById(R.id.parent_layout);
         }
     }
 }
