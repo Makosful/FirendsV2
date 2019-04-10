@@ -91,6 +91,10 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
         });
     }
 
+    /**
+     * Opens a new FriendDetail Activity. The contained Friend is determined by the Friend ID passed in
+     * @param id The Friend ID
+     */
     private void openDetailView(int id) {
         Intent i = new Intent(context, FriendDetail.class);
         i.putExtra(Common.DATA_FRIEND_DETAIL, id);

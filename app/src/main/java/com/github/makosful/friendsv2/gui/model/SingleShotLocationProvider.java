@@ -11,10 +11,22 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 public class SingleShotLocationProvider {
+
+    /**
+     * Interface used to handle callbacks from requestSingleUpdate
+     */
     public static interface LocationCallback {
         public void onNewLocationAvailable(Location location);
     }
 
+    /**
+     * Copy pasted coded.
+     * Updates the location from the device's Location Manager. Once a location has been found,
+     * calls a callback method from the interface LocationCallback which will be responsible for
+     * handling the location afterwards.
+     * @param context The context calling this method
+     * @param callback The class implementing the callback interface
+     */
     public static void requestSingleUpdate(final Context context, final LocationCallback callback) {
         final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);

@@ -48,6 +48,10 @@ public class FriendDetail extends AppCompatActivity {
     private TextView email;
     private TextView website;
 
+    /**
+     * Small hack to reduce code repetition
+     * @param message The message to print
+     */
     private static void log(String message) {
         Log.d(TAG, message);
     }
@@ -81,6 +85,12 @@ public class FriendDetail extends AppCompatActivity {
         log("Finished creating Friend Detail");
     }
 
+    /**
+     * Appropriately handles the events when focus returns to this Activity from an Activity called by this context
+     * @param requestCode The code used to make the initial request
+     * @param resultCode The result code of the request
+     * @param data Additional data sent back from the Activity.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         log("Parsing result code");
@@ -102,11 +112,18 @@ public class FriendDetail extends AppCompatActivity {
         }
     }
 
+    /**
+     * Overrides back button functionality to properly close this Activity
+     */
     @Override
     public void onBackPressed() {
         finish();
     }
 
+    /**
+     * Opens the default map activity with the current friend asa parameter
+     * @param view The view that calls this method.
+     */
     public void showFriendOnMap(View view) {
         log("Creating Map Activity");
         Intent i = new Intent(this, MapsActivity.class);
@@ -115,7 +132,6 @@ public class FriendDetail extends AppCompatActivity {
         log("Starting Map activity");
         startActivity(i);
     }
-
 
     /**
      * Launches the default browser and loads the friend's website
@@ -376,6 +392,11 @@ public class FriendDetail extends AppCompatActivity {
     }
 
 
+    /**
+     * Gets a new filepath in the devices's picture storage. Filename is based on timestamp
+     * @return A new nonexistent file with a filepath
+     * @throws IOException In case anything happens, IOException
+     */
     private File getNewFilePath() throws IOException {
         log("Gets the file path");
 
@@ -405,6 +426,9 @@ public class FriendDetail extends AppCompatActivity {
         return new File(dir.getPath() + File.separator + filename);
     }
 
+    /**
+     * Deletes the current Friend from storage
+     */
     private void delete() {
         if (this.model.deleteFriend(this.friend))
             finish();

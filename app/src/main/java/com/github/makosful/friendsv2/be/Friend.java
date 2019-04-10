@@ -1,8 +1,5 @@
 package com.github.makosful.friendsv2.be;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.Date;
 

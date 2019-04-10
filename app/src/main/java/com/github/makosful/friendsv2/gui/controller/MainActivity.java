@@ -49,12 +49,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Updates the list of Friends
+     */
     private void updateList() {
         friendList.clear();
         friendList.addAll(model.getFriendList());
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Opens a new Activity to add a new Friends
+     * @param view The View that calls this method
+     */
     public void addFriend(View view) {
         Intent i = new Intent(this, FriendAdd.class);
         this.startActivityForResult(i, Common.ACTIVITY_REQUEST_CODE_FRIEND_ADD);

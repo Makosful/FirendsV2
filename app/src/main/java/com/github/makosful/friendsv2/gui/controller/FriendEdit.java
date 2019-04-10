@@ -56,11 +56,14 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         finishActivity();
     }
 
+    /**
+     * Callback from IMapCallBack interface.
+     * Unused in the current context, but necessary
+     * @param location Unused.
+     */
     @Override
     public void setCurrentLocation(Location location) {
-        String lat = String.valueOf(location.getLatitude());
-        String lng = String.valueOf(location.getLongitude());
-        log("latitude: " + lat + " & longitude: " + lng);
+         // Does nothing in this context
     }
 
     /**

@@ -39,6 +39,10 @@ public class FriendMeta extends Fragment {
      */
     public FriendMeta() { }
 
+    /**
+     * Unused default from Fragment
+     * @return A new instance of this class
+     */
     public static FriendMeta newInstance() {
         FriendMeta friendMeta = new FriendMeta();
         return friendMeta;
@@ -52,7 +56,10 @@ public class FriendMeta extends Fragment {
         }
     }
 
-    private void m() {
+    /**
+     * Update the fields based on the current instance of Friend
+     */
+    private void updateFields() {
         if (this.friend != null && this.friend.getName() != null) txt_name.setText(this.friend.getName());
         if (this.friend != null && this.friend.getPhone() != null) txt_phone.setText(this.friend.getPhone());
         if (this.friend != null && this.friend.getEmail() != null) txt_email.setText(this.friend.getEmail());
@@ -60,6 +67,7 @@ public class FriendMeta extends Fragment {
         if (this.friend != null && this.friend.getAddress() != null) txt_address.setText(this.friend.getAddress());
         if (this.friend != null && this.friend.getWebsite() != null) txt_website.setText(this.friend.getWebsite());
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_meta, container, false);
@@ -92,7 +100,7 @@ public class FriendMeta extends Fragment {
 
         txt_website = view.findViewById(R.id.txt_friend_meta_website);
         txt_website.addTextChangedListener(new MyTextWatcher());
-        m();
+        updateFields();
 
         return view;
     }
@@ -114,6 +122,10 @@ public class FriendMeta extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Creates a new Friend based on the current Field values
+     * @return Returns a new instance of Friend
+     */
     private Friend assembleFriend() {
         Friend friend = new Friend();
 
@@ -157,6 +169,9 @@ public class FriendMeta extends Fragment {
         return friend;
     }
 
+    /**
+     * Opens a DatePicker dialog focused on today
+     */
     private void openDatePickerDialog() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -168,6 +183,12 @@ public class FriendMeta extends Fragment {
         diag.show();
     }
 
+    /**
+     * Update the Birthday Field
+     * @param year The year to display
+     * @param month The month to display
+     * @param dayOfMonth The day to display
+     */
     private void setDate(int year, int month, int dayOfMonth) {
         Calendar c = Calendar.getInstance();
         c.set(year, month, dayOfMonth, 0, 0, 0);
@@ -175,15 +196,26 @@ public class FriendMeta extends Fragment {
         tv_bday.setText(year + "/" + (month +1) + "/" + dayOfMonth);
     }
 
+    /**
+     * Sets the local instance of Friend.
+     * Used to set the initial state of the Friend.
+     * @param friend The new instance of Friend
+     */
     public void setFriend(Friend friend) {
         this.friend = friend;
-        m();
+        updateFields();
     }
 
+    /**
+     * Callback interface
+     */
     public interface OnFragmentInteractionListener {
         void updateFriend(Friend friend);
     }
 
+    /**
+     * Custom implementation of the TextWatcher interface.
+     */
     private class MyTextWatcher implements TextWatcher {
 
         @Override
