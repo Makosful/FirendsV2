@@ -20,7 +20,7 @@ public class MainModel {
 
     public MainModel(Context context) {
         friendStorage = new SQLiteFriends(context);
-        // friendStorage.seed();
+        friendStorage.seed();
         // friendStorage = MemoryStorageFriends.getInstance();
     }
 

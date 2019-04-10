@@ -106,17 +106,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add latlng + marker
-        friendMarker = new MarkerOptions().position(new LatLng(this.friend.getLatitude(), this.friend.getLongitude()));
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        // Already went through permission check. Added AZURE (blue) color to DEVICE marker, RED (default) on FRIEND marker until we can use picture icon
-        deviceMarker = new MarkerOptions().position(new LatLng(getLastKnownLocation().getLatitude(), getLastKnownLocation().getLongitude())).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        
+        // Add latlng + marker
+        friendMarker = new MarkerOptions().position(new LatLng(this.friend.getLatitude(), this.friend.getLongitude()));
+        deviceMarker = new MarkerOptions().position(new LatLng(getLastKnownLocation().getLatitude(), getLastKnownLocation().getLongitude()));
 
-        // TODO finish by re-adding custom user image icon instead of standard red pointer
+
+        // Already went through permission check. Added AZURE (blue) color to DEVICE marker, RED (default) on FRIEND marker until we can use picture icon
+        mMap.addMarker(deviceMarker.title("YOU").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        // TODO finish by re-adding custom user image icon instead of default red pointer
         mMap.addMarker(friendMarker.title(this.friend.getName())/*.icon(BitmapDescriptorFactory.fromBitmap(this.friend.getPicture()))*/);
         // center map
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(this.friend.getLatitude(), this.friend.getLongitude())));
