@@ -2,6 +2,8 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -157,6 +159,27 @@ public class FriendDetail extends AppCompatActivity {
         startActivity(sendIntent);
     }
 
+    public void openDeleteDialog(View view) {
+        AlertDialog ad = new AlertDialog.Builder(this).create();
+        ad.setTitle("Delete?");
+        ad.setMessage("Are you sure you want to delete " + this.friend.getName() + " from your friend list?");
+
+        ad.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                delete();
+            }
+        });
+        ad.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do Nothing
+            }
+        });
+
+        ad.show();
+    }
+
 
     /**
      * Launches the Edit Friend activity
@@ -264,7 +287,7 @@ public class FriendDetail extends AppCompatActivity {
     /**
      * Update the name view based on the current instance of the Friend
      */
-    private void updateName(){
+    private void updateName() {
         log("Updating the name");
         name.setText(friend.getName());
         // No checks since name is mandatory
@@ -374,4 +397,12 @@ public class FriendDetail extends AppCompatActivity {
 
         return new File(dir.getPath() + File.separator + filename);
     }
+
+    private void delete() {
+        if (this.model.deleteFriend(this.friend))
+            finish();
+        else
+            Toast.makeText(this, "Failed to delete friend", Toast.LENGTH_SHORT).show();
+    }
+
 }

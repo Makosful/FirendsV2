@@ -5,20 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.makosful.friendsv2.Common;
@@ -67,7 +61,7 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
 
     @Override
     public void onBackPressed() {
-        cancel();
+        finishActivity();
     }
 
     @Override
@@ -110,7 +104,7 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
      * @param view The view that calls this method
      */
     public void cancel(View view) {
-        cancel();
+        finishActivity();
     }
 
     public void setHome(View view) {
@@ -146,7 +140,7 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
     /**
      * Backs out of the activity without saving any data
      */
-    private void cancel() {
+    private void finishActivity() {
         log("Canceling changes");
         setResult(Activity.RESULT_CANCELED);
         finish();

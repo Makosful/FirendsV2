@@ -39,4 +39,8 @@ public class MainModel {
     public boolean createFriend(Friend friend) {
         return friendStorage.create(friend);
     }
+
+    public boolean deleteFriend(Friend friend) {
+        return friendStorage.deleteById(friend.getId());
+    }
 }
