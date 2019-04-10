@@ -20,10 +20,11 @@ import com.github.makosful.friendsv2.IMapCallBack;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
 import com.github.makosful.friendsv2.gui.model.MyLocationListener;
+import com.github.makosful.friendsv2.gui.model.SingleShotLocationProvider;
 
 import java.util.Objects;
 
-public class FriendEdit extends AppCompatActivity implements IMapCallBack, FriendMeta.OnFragmentInteractionListener {
+public class FriendEdit extends AppCompatActivity implements IMapCallBack, FriendMeta.OnFragmentInteractionListener, SingleShotLocationProvider.LocationCallback {
 
     private static final String TAG = "FriendEdit";
 
@@ -81,6 +82,14 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         this.friend = friend;
     }
 
+    @Override
+    public void onNewLocationAvailable(Location location) {
+        this.friend.setLatitude(location.getLatitude());
+        this.friend.setLongitude(location.getLongitude());
+
+        Toast.makeText(this, "Latitude: " + friend.getLatitude() + ", Longitude: " + friend.getLongitude(), Toast.LENGTH_SHORT).show();
+    }
+
     /**
      * Called on Button press Save
      * @param view The view that calls this method
@@ -108,33 +117,14 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
     }
 
     public void setHome(View view) {
-        log("Getting last known location");
-        Location location = getLastKnownLocation();
+        int permissionDenied = PackageManager.PERMISSION_DENIED;
+        String accessFineLocation = Manifest.permission.ACCESS_FINE_LOCATION;
 
-
-        String s = "(" + location.getLatitude() + ";" + location.getLongitude() + ")";
-
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-    }
-
-    public Location getLastKnownLocation() {
-        boolean GPSPermissionGiven;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            GPSPermissionGiven = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
-                                 PackageManager.PERMISSION_GRANTED;
-        } else {
-            GPSPermissionGiven = true;
+        if (checkSelfPermission(accessFineLocation) == permissionDenied) {
+            requestPermissions(new String[]{accessFineLocation}, Common.PERMISSION_REQUEST_CODE_LOCATION);
         }
 
-        if (GPSPermissionGiven) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 1, locationListener);
-            locationManager.removeUpdates(locationListener);
-
-            return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        } else {
-            return null;
-        }
+        SingleShotLocationProvider.requestSingleUpdate(this, this);
     }
 
     /**
