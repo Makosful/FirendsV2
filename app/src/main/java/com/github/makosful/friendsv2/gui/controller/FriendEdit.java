@@ -2,12 +2,9 @@ package com.github.makosful.friendsv2.gui.controller;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +16,6 @@ import com.github.makosful.friendsv2.Common;
 import com.github.makosful.friendsv2.IMapCallBack;
 import com.github.makosful.friendsv2.R;
 import com.github.makosful.friendsv2.be.Friend;
-import com.github.makosful.friendsv2.gui.model.MyLocationListener;
 import com.github.makosful.friendsv2.gui.model.SingleShotLocationProvider;
 
 import java.util.Objects;
@@ -30,16 +26,11 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
 
     private Friend friend;
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-
-    public FriendEdit()
-    {
-        locationListener = new MyLocationListener(this);
-    }
-
-    private static void log(String message)
-    {
+    /**
+     * Small hack to minimize repetitive calls of the Log.d() method
+     * @param message The message to log
+     */
+    private static void log(String message) {
         Log.d(TAG, message);
     }
 
@@ -54,20 +45,15 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         assert frag != null;
         frag.setFriend(friend);
 
-        log("Gets LocationManager");
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         log("Creation finished successfully");
     }
 
+    /**
+     * Overrides the functionality of the back button, to properly end this Activity
+     */
     @Override
     public void onBackPressed() {
         finishActivity();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        log("Permission: " + permissions[0] + " - grantResult: " + grantResults[0]);
     }
 
     @Override
@@ -77,11 +63,26 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         log("latitude: " + lat + " & longitude: " + lng);
     }
 
+    /**
+     * Callback method from FriendMeta.OnFragmentInteractionListener
+     * This method updates the local instance of Friend with the instance created in FriendMeta
+     * @param friend The new instance of Friend
+     */
     @Override
     public void updateFriend(Friend friend) {
-        this.friend = friend;
+        // Location is managed in this class
+        // The location of the Friend returned from FriendMeta is overridden by the location from the local instance
+        Friend temp = friend;
+        temp.setLatitude(this.friend.getLatitude());
+        temp.setLongitude(this.friend.getLongitude());
+        this.friend = temp;
     }
 
+    /**
+     * Callback method from SingleShotLocationProvider.LocationCallback
+     * This method updates the local friend's lat/long.
+     * @param location The location with the latest coordinates.
+     */
     @Override
     public void onNewLocationAvailable(Location location) {
         this.friend.setLatitude(location.getLatitude());
@@ -116,6 +117,12 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         finishActivity();
     }
 
+    /**
+     * Method should be called from View (XML)
+     * Checks for Fine Access Permission.
+     * This method sets the current location as the Friend's Location.
+     * @param view The View that calls this method.
+     */
     public void setHome(View view) {
         int permissionDenied = PackageManager.PERMISSION_DENIED;
         String accessFineLocation = Manifest.permission.ACCESS_FINE_LOCATION;
