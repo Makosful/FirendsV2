@@ -48,11 +48,8 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         Log.d(TAG, message);
     }
 
-    // AppCompatActivity Overrides
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         log("Creating Friend Edit");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_edit);
@@ -69,26 +66,32 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         cancel();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         log("Permission: " + permissions[0] + " - grantResult: " + grantResults[0]);
     }
 
-    // View Calls
+    @Override
+    public void setCurrentLocation(Location location) {
+        String lat = String.valueOf(location.getLatitude());
+        String lng = String.valueOf(location.getLongitude());
+        log("latitude: " + lat + " & longitude: " + lng);
+    }
+
+    @Override
+    public void updateFriend(Friend friend) {
+        this.friend = friend;
+    }
 
     /**
      * Called on Button press Save
      * @param view The view that calls this method
      */
-    public void saveEdits(View view)
-    {
+    public void saveEdits(View view) {
         log("Preparing to save edits");
 
         log("Creating return Intent");
@@ -106,13 +109,11 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
      * Called on Button press Cancel.
      * @param view The view that calls this method
      */
-    public void cancel(View view)
-    {
+    public void cancel(View view) {
         cancel();
     }
 
-    public void setHome(View view)
-    {
+    public void setHome(View view) {
         log("Getting last known location");
         Location location = getLastKnownLocation();
 
@@ -122,51 +123,32 @@ public class FriendEdit extends AppCompatActivity implements IMapCallBack, Frien
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
-    // Internal methods
-
-    public Location getLastKnownLocation()
-    {
+    public Location getLastKnownLocation() {
         boolean GPSPermissionGiven;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             GPSPermissionGiven = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
                                  PackageManager.PERMISSION_GRANTED;
-        }
-        else {
+        } else {
             GPSPermissionGiven = true;
-
         }
 
-        if (GPSPermissionGiven)
-        {
+        if (GPSPermissionGiven) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000, 1, locationListener);
             locationManager.removeUpdates(locationListener);
 
             return locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        else
+        } else {
             return null;
+        }
     }
 
     /**
      * Backs out of the activity without saving any data
      */
-    private void cancel()
-    {
+    private void cancel() {
         log("Canceling changes");
         setResult(Activity.RESULT_CANCELED);
         finish();
-    }
-
-    @Override
-    public void setCurrentLocation(Location location) {
-        String lat = String.valueOf(location.getLatitude());
-        String lng = String.valueOf(location.getLongitude());
-        log("latitude: " + lat + " & longitude: " + lng);
-    }
-
-    @Override
-    public void updateFriend(Friend friend) {
-        // TODO
     }
 }
